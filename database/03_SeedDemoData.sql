@@ -53,18 +53,17 @@ SET IDENTITY_INSERT [dbo].[AcademicTerms] OFF;
 GO
 
 -- =============================================
--- 2. Courses
+-- 2. Courses (Khong co mon Tinh toan dong ke)
 -- =============================================
 SET IDENTITY_INSERT [dbo].[Courses] ON;
 
 IF NOT EXISTS (SELECT 1 FROM [dbo].[Courses] WHERE [CourseId] = 1)
 INSERT INTO [dbo].[Courses] ([CourseId], [CourseCode], [CourseName], [Credits])
 VALUES
-    (1, N'TEC5500183B', N'Tu duy thiet ke', 3),
-    (2, N'MAT58013B',   N'Tinh toan thong ke', 3),
-    (3, N'MIS5011B',    N'Tinh toan dong ke', 3),
-    (4, N'PUF604103B',  N'Nguyen ly ke toan', 3),
-    (5, N'BUS3012B',    N'Quan tri hoc', 3);
+    (1, N'TEC5500183B', N'Tư duy thiết kế', 3),
+    (2, N'MAT58013B',   N'Tính toán thống kê', 3),
+    (4, N'PUF604103B',  N'Nguyên lý kế toán', 3),
+    (5, N'BUS3012B',    N'Quản trị học', 3);
 
 SET IDENTITY_INSERT [dbo].[Courses] OFF;
 GO
@@ -79,7 +78,6 @@ INSERT INTO [dbo].[ClassSections] ([ClassSectionId], [ClassSectionCode], [Course
 VALUES
     (1, N'28C1TEC5500183B01', 1, 1, N'LHP'),
     (2, N'28C1MAT5801360101', 2, 1, N'LHP'),
-    (3, N'28C1MIS50110001',   3, 1, N'N2'),
     (4, N'28C1PUF6041030101', 4, 1, N'LHP'),
     (5, N'28C1BUS30120001',   5, 1, N'LHP');
 
@@ -88,122 +86,114 @@ GO
 
 -- =============================================
 -- 4. Students
--- Du lieu minh hoa - KHONG phai du lieu thuc
+-- 7 sinh vien Khoa Toan thong ke, nganh Thong ke kinh doanh
 -- =============================================
 SET IDENTITY_INSERT [dbo].[Students] ON;
 
 IF NOT EXISTS (SELECT 1 FROM [dbo].[Students] WHERE [StudentId] = 1)
-INSERT INTO [dbo].[Students] ([StudentId], [StudentCode], [FullName], [Faculty], [Major], [CohortYear])
+INSERT INTO [dbo].[Students] ([StudentId], [StudentCode], [FullName], [Faculty], [Major], [CohortYear], [IsActive])
 VALUES
-    (1, N'31251022130', N'Nguyễn Minh Khôi',  N'Khoa Cong nghe thong tin kinh doanh', N'He thong thong tin quan ly', 2025),
-    (2, N'31251020845', N'Nguyễn Nhựt Thắng',  N'Khoa Cong nghe thong tin kinh doanh', N'He thong thong tin quan ly', 2025);
+    (1, N'31251022130', N'Nguyễn Minh Khôi',       N'Khoa Toán thống kê', N'Thống kê kinh doanh', 2025, 1),
+    (2, N'31251023860', N'Nguyễn Nhựt Thắng',      N'Khoa Toán thống kê', N'Thống kê kinh doanh', 2025, 1),
+    (3, N'31251025093', N'Phạm Trần Tuấn Khang',   N'Khoa Toán thống kê', N'Thống kê kinh doanh', 2025, 1),
+    (4, N'31251026911', N'Trà Anh Thư',            N'Khoa Toán thống kê', N'Thống kê kinh doanh', 2025, 1),
+    (5, N'31251023365', N'Nguyễn Thị Thanh Tâm',    N'Khoa Toán thống kê', N'Thống kê kinh doanh', 2025, 1),
+    (6, N'31251023149', N'Nguyễn Ngọc Anh Thư',    N'Khoa Toán thống kê', N'Thống kê kinh doanh', 2025, 1),
+    (7, N'31251026534', N'Nguyễn Hữu Toàn',        N'Khoa Toán thống kê', N'Thống kê kinh doanh', 2025, 1);
 
 SET IDENTITY_INSERT [dbo].[Students] OFF;
 GO
 
 -- =============================================
 -- 5. AppUsers
--- Mat khau ho tro nhap truc tiep (Student1, Student2, Admin@123)
--- va he thong se tu dong ma hoa BCrypt khi sinh vien / admin dang nhap.
+-- User la MSSV, Password la 4 so cuoi MSSV
 -- =============================================
 SET IDENTITY_INSERT [dbo].[AppUsers] ON;
 
 IF NOT EXISTS (SELECT 1 FROM [dbo].[AppUsers] WHERE [UserId] = 1)
-INSERT INTO [dbo].[AppUsers] ([UserId], [Username], [PasswordHash], [RoleName], [StudentId])
+INSERT INTO [dbo].[AppUsers] ([UserId], [Username], [PasswordHash], [RoleName], [StudentId], [IsActive])
 VALUES
-    (1, N'admin',           N'Admin@123', 'Admin',   NULL),
-    (2, N'nguyenminhkhoi',  N'Student1',  'Student', 1),
-    (3, N'nguyennhatthang', N'Student2',  'Student', 2);
+    (1, N'admin',       N'Admin@123', 'Admin',   NULL, 1),
+    (2, N'31251022130', N'2130',      'Student', 1,    1),
+    (3, N'31251023860', N'3860',      'Student', 2,    1),
+    (4, N'31251025093', N'5093',      'Student', 3,    1),
+    (5, N'31251026911', N'6911',      'Student', 4,    1),
+    (6, N'31251023365', N'3365',      'Student', 5,    1),
+    (7, N'31251023149', N'3149',      'Student', 6,    1),
+    (8, N'31251026534', N'6534',      'Student', 7,    1);
 
 SET IDENTITY_INSERT [dbo].[AppUsers] OFF;
 GO
 
 -- =============================================
 -- 6. StudentCourseEnrollments
--- Sinh vien 1 (Tran Van Hoang): 4 lop
--- Sinh vien 2 (Le Thi Mai Anh): 3 lop
+-- Dang ky 4 mon hoc cho ca 7 sinh vien
 -- =============================================
 IF NOT EXISTS (SELECT 1 FROM [dbo].[StudentCourseEnrollments] WHERE [StudentId] = 1 AND [ClassSectionId] = 1)
-INSERT INTO [dbo].[StudentCourseEnrollments] ([StudentId], [ClassSectionId], [Status])
+INSERT INTO [dbo].[StudentCourseEnrollments] ([StudentId], [ClassSectionId], [Status], [IsActive])
 VALUES
-    (1, 1, 'Active'),   -- Tu duy thiet ke
-    (1, 2, 'Active'),   -- Tinh toan thong ke
-    (1, 3, 'Active'),   -- Tinh toan dong ke
-    (1, 4, 'Active');   -- Nguyen ly ke toan
-
-IF NOT EXISTS (SELECT 1 FROM [dbo].[StudentCourseEnrollments] WHERE [StudentId] = 2 AND [ClassSectionId] = 1)
-INSERT INTO [dbo].[StudentCourseEnrollments] ([StudentId], [ClassSectionId], [Status])
-VALUES
-    (2, 1, 'Active'),   -- Tu duy thiet ke
-    (2, 2, 'Active'),   -- Tinh toan thong ke
-    (2, 5, 'Active');   -- Quan tri hoc
+    (1, 1, 'Active', 1), (1, 2, 'Active', 1), (1, 4, 'Active', 1), (1, 5, 'Active', 1),
+    (2, 1, 'Active', 1), (2, 2, 'Active', 1), (2, 4, 'Active', 1), (2, 5, 'Active', 1),
+    (3, 1, 'Active', 1), (3, 2, 'Active', 1), (3, 4, 'Active', 1), (3, 5, 'Active', 1),
+    (4, 1, 'Active', 1), (4, 2, 'Active', 1), (4, 4, 'Active', 1), (4, 5, 'Active', 1),
+    (5, 1, 'Active', 1), (5, 2, 'Active', 1), (5, 4, 'Active', 1), (5, 5, 'Active', 1),
+    (6, 1, 'Active', 1), (6, 2, 'Active', 1), (6, 4, 'Active', 1), (6, 5, 'Active', 1),
+    (7, 1, 'Active', 1), (7, 2, 'Active', 1), (7, 4, 'Active', 1), (7, 5, 'Active', 1);
 GO
 
 -- =============================================
 -- 7. ClassScheduleRules
--- Quy tac lich hoc dinh ky cho hoc ky cuoi 2026-2027
--- DayOfWeek: 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat, 7=Sun
--- Khoang ap dung: 07/09/2026 - 17/01/2027
--- Du lieu trai nhieu tuan de kiem thu chon tuan bat ky
+-- Quy tac lich hoc dinh ky
 -- =============================================
 
--- Tu duy thiet ke (ClassSection 1): Thu 2, Tiet 2-5 (07:30-11:30)
+-- Tu duy thiet ke (ClassSection 1): Thu 2, Tiet 2-5 (07:30-11:30) - ThS. Nguyen Quoc Khanh
 IF NOT EXISTS (SELECT 1 FROM [dbo].[ClassScheduleRules] WHERE [ClassSectionId] = 1 AND [DayOfWeek] = 1)
 INSERT INTO [dbo].[ClassScheduleRules] 
     ([ClassSectionId], [DayOfWeek], [StartTime], [EndTime], [Room], [Instructor], [EffectiveStartDate], [EffectiveEndDate])
 VALUES
-    (1, 1, '07:30', '11:30', N'N2-508',  N'TS. Le Thanh Trung', '2026-09-07', '2027-01-17');
+    (1, 1, '07:30', '11:30', N'N2-508',  N'ThS. Nguyễn Quốc Khánh', '2026-09-07', '2027-01-17');
 
--- Tinh toan thong ke (ClassSection 2): Thu 2, Tiet 8-12 (12:30-16:30) 
+-- Tinh toan thong ke (ClassSection 2): Thu 2, Tiet 8-12 (12:30-16:30) - TS. Le Thanh Trung
 IF NOT EXISTS (SELECT 1 FROM [dbo].[ClassScheduleRules] WHERE [ClassSectionId] = 2 AND [DayOfWeek] = 1)
 INSERT INTO [dbo].[ClassScheduleRules]
     ([ClassSectionId], [DayOfWeek], [StartTime], [EndTime], [Room], [Instructor], [EffectiveStartDate], [EffectiveEndDate])
 VALUES
-    (2, 1, '12:30', '16:30', NULL, N'TS. Le Thanh Trung', '2026-09-07', '2027-01-17');
+    (2, 1, '12:30', '16:30', N'B1-205',  N'TS. Lê Thanh Trung', '2026-09-07', '2027-01-17');
 
--- Tinh toan dong ke (ClassSection 3): Thu 3, Tiet 2-5 (07:30-11:30)
-IF NOT EXISTS (SELECT 1 FROM [dbo].[ClassScheduleRules] WHERE [ClassSectionId] = 3 AND [DayOfWeek] = 2)
-INSERT INTO [dbo].[ClassScheduleRules]
-    ([ClassSectionId], [DayOfWeek], [StartTime], [EndTime], [Room], [Instructor], [EffectiveStartDate], [EffectiveEndDate])
-VALUES
-    (3, 2, '07:30', '11:30', N'N2-508',  N'ThS. Nguyen Quoc Khanh', '2026-09-07', '2027-01-17');
-
--- Nguyen ly ke toan (ClassSection 4): Thu 4, Tiet 2-5 (07:30-11:30)
+-- Nguyen ly ke toan (ClassSection 4): Thu 4, Tiet 2-5 (07:30-11:30) - ThS. Tran Thi Thuong
 IF NOT EXISTS (SELECT 1 FROM [dbo].[ClassScheduleRules] WHERE [ClassSectionId] = 4 AND [DayOfWeek] = 3)
 INSERT INTO [dbo].[ClassScheduleRules]
     ([ClassSectionId], [DayOfWeek], [StartTime], [EndTime], [Room], [Instructor], [EffectiveStartDate], [EffectiveEndDate])
 VALUES
-    (4, 3, '07:30', '11:30', N'N2-507',  N'ThS. Tran Thi Thuong', '2026-09-07', '2027-01-17');
+    (4, 3, '07:30', '11:30', N'N2-507',  N'ThS. Trần Thị Thương', '2026-09-07', '2027-01-17');
 
--- Nguyen ly ke toan (ClassSection 4): Thu 5, Tiet 2-3 (07:30-09:30) — buoi 2
+-- Nguyen ly ke toan (ClassSection 4): Thu 5, Tiet 2-3 (07:30-09:30) - ThS. Tran Thi Thuong
 IF NOT EXISTS (SELECT 1 FROM [dbo].[ClassScheduleRules] WHERE [ClassSectionId] = 4 AND [DayOfWeek] = 4)
 INSERT INTO [dbo].[ClassScheduleRules]
     ([ClassSectionId], [DayOfWeek], [StartTime], [EndTime], [Room], [Instructor], [EffectiveStartDate], [EffectiveEndDate])
 VALUES
-    (4, 4, '07:30', '09:30', N'N2-507',  N'ThS. Tran Thi Thuong', '2026-09-07', '2027-01-17');
+    (4, 4, '07:30', '09:30', N'N2-507',  N'ThS. Trần Thị Thương', '2026-09-07', '2027-01-17');
 
--- Quan tri hoc (ClassSection 5): Thu 6, Tiet 2-5 (07:30-11:30)
+-- Quan tri hoc (ClassSection 5): Thu 6, Tiet 2-5 (07:30-11:30) - PGS.TS. Hoang Van Binh
 IF NOT EXISTS (SELECT 1 FROM [dbo].[ClassScheduleRules] WHERE [ClassSectionId] = 5 AND [DayOfWeek] = 5)
 INSERT INTO [dbo].[ClassScheduleRules]
     ([ClassSectionId], [DayOfWeek], [StartTime], [EndTime], [Room], [Instructor], [EffectiveStartDate], [EffectiveEndDate])
 VALUES
-    (5, 5, '07:30', '11:30', N'N3-201',  N'PGS.TS. Hoang Van Binh', '2026-09-07', '2027-01-17');
+    (5, 5, '07:30', '11:30', N'N3-201',  N'PGS.TS. Hoàng Văn Bình', '2026-09-07', '2027-01-17');
 GO
 
 -- =============================================
 -- 8. ExamSchedules
--- Lich thi cuoi hoc ky, cuoi thang 11/2026
+-- Lich thi cuoi hoc ky, cuoi thang 11 - dau thang 12/2026
 -- =============================================
 IF NOT EXISTS (SELECT 1 FROM [dbo].[ExamSchedules] WHERE [ClassSectionId] = 1)
 INSERT INTO [dbo].[ExamSchedules] 
     ([ClassSectionId], [ExamDate], [StartTime], [EndTime], [Room], [Location], [ExamType], [ExamForm], [Notes])
 VALUES
-    (1, '2026-11-30', '08:00', NULL, NULL,    NULL,                    N'Thi cuoi hoc phan', N'Du an',                        N'Thi het thuc hoc phan'),
+    (1, '2026-11-30', '08:00', NULL,    NULL,     N'UEH Nguyễn Văn Linh',  N'Thi cuoi hoc phan', N'Du an',                        N'Thi het thuc hoc phan'),
     (2, '2026-11-29', '08:30', '10:00', N'N2-N24', N'UEH Nguyen Van Linh',  N'Thi cuoi hoc phan', N'Trac nghiem va tu luan tu trung', N'Thi het thuc hoc phan'),
-    (3, '2026-11-28', '09:00', '11:00', N'N2-201', N'UEH Nguyen Van Linh',  N'Thi cuoi hoc phan', N'Tu luan',                   NULL),
     (4, '2026-11-27', '13:30', '15:30', N'N2-301', N'UEH Nguyen Van Linh',  N'Thi cuoi hoc phan', N'Trac nghiem',                NULL);
 
--- Them lich thi cho ClassSection 5 (Quan tri hoc)
 IF NOT EXISTS (SELECT 1 FROM [dbo].[ExamSchedules] WHERE [ClassSectionId] = 5)
 INSERT INTO [dbo].[ExamSchedules]
     ([ClassSectionId], [ExamDate], [StartTime], [EndTime], [Room], [Location], [ExamType], [ExamForm])
