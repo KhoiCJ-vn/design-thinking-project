@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập — Cổng thông tin UEH Student & My Week</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .login-page-wrapper {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(180deg, #f0f4f8 0%, #e2e8f0 100%);
+        }
+        .login-card {
+            background: var(--ueh-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            border-top: 4px solid var(--ueh-orange);
+            width: 100%;
+            max-width: 440px;
+            padding: 32px;
+        }
+        .demo-box {
+            background: #fff8f5;
+            border: 1px dashed var(--ueh-orange-border);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+        .demo-btn-group {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page-wrapper">
+        <div class="login-card">
+            <!-- Header with UEH logo style -->
+            <div style="text-align: center; margin-bottom: 24px;">
+                <div style="font-size: 32px; font-weight: 900; color: var(--ueh-teal); letter-spacing: 1px; line-height: 1;">UEH</div>
+                <div style="font-size: 11px; font-weight: 700; color: var(--ueh-orange); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px;">UNIVERSITY</div>
+                <h1 style="font-size: 16px; font-weight: 700; color: var(--ueh-text-dark); margin-top: 14px;">
+                    CỔNG THÔNG TIN SINH VIÊN
+                </h1>
+                <p style="font-size: 12.5px; color: var(--ueh-text-muted); margin-top: 4px;">
+                    Đăng nhập để trải nghiệm tính năng <strong>UEH My Week</strong>
+                </p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="username">Tên đăng nhập / Mã sinh viên:</label>
+                    <input type="text" id="username" class="form-control" placeholder="Nhập tên đăng nhập hoặc mã SV" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Mật khẩu:</label>
+                    <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu" required>
+                </div>
+
+                <div id="error-message" style="display: none; color: var(--ueh-red); font-size: 12.5px; margin-bottom: 12px; padding: 6px 10px; background: var(--ueh-red-bg); border-radius: var(--radius-sm);"></div>
+
+                <button type="submit" id="btn-submit" class="btn btn-orange" style="width: 100%; padding: 10px; font-size: 14px;">
+                    Đăng nhập hệ thống
+                </button>
+            </form>
+
+            <!-- Demo Accounts helper -->
+            <div class="demo-box">
+                <div style="font-weight: 700; color: var(--ueh-orange); margin-bottom: 4px;">
+                    💡 Tài khoản trải nghiệm có sẵn:
+                </div>
+                <div>Nhấp vào nút để tự động điền thông tin:</div>
+                <div class="demo-btn-group">
+                    <button type="button" class="btn btn-outline btn-sm" onclick="fillAccount('tranvanhoang', 'Student@123')">
+                        🎓 SV Trần Văn Hoàng
+                    </button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="fillAccount('lethimaianh', 'Student@123')">
+                        🎓 SV Lê Thị Mai Anh
+                    </button>
+                    <button type="button" class="btn btn-outline btn-sm" onclick="fillAccount('admin', 'Admin@123')">
+                        🛡️ Quản trị viên (Admin)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; font-size: 12px; color: var(--ueh-text-muted);">
+            Đại học Kinh tế Thành phố Hồ Chí Minh (UEH) • Phiên bản học tập & prototype
+        </div>
+    </div>
+
+    <script src="js/api-client.js"></script>
+    <script>
+        function fillAccount(username, password) {
+            document.getElementById('username').value = username;
+            document.getElementById('password').value = password;
+            document.getElementById('error-message').style.display = 'none';
+        }
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error-message');
+            const submitBtn = document.getElementById('btn-submit');
+
+            errorDiv.style.display = 'none';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Đang xác thực...';
+
+            try {
+                const result = await ApiClient.login(u, p);
+                if (result.role === 'Admin') {
+                    window.location.href = 'admin.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
+            } catch (err) {
+                errorDiv.textContent = err.message || 'Tên đăng nhập hoặc mật khẩu không đúng.';
+                errorDiv.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Đăng nhập hệ thống';
+            }
+        });
+
+        // If already logged in, redirect
+        if (ApiClient.isAuthenticated()) {
+            const user = ApiClient.getUser();
+            if (user && user.role === 'Admin') {
+                window.location.href = 'admin.html';
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản trị hệ thống — UEH Student Portal</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .admin-nav-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 2px solid var(--ueh-teal);
+            margin-bottom: 20px;
+        }
+        .admin-nav-item {
+            padding: 10px 18px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--ueh-text-muted);
+            cursor: pointer;
+            border-top-left-radius: var(--radius-sm);
+            border-top-right-radius: var(--radius-sm);
+            background: #f1f5f9;
+            transition: all 0.15s;
+        }
+        .admin-nav-item.active {
+            background: var(--ueh-teal);
+            color: var(--ueh-white);
+        }
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 960px) {
+            .admin-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="top-header">
+        <div class="logo-container">
+            <div class="logo-text">
+                <span class="logo-main">UEH</span>
+                <span class="logo-sub">UNIVERSITY</span>
+            </div>
+            <div style="height: 28px; width: 1px; background: var(--ueh-border); margin: 0 8px;"></div>
+            <span style="font-weight: 700; color: var(--ueh-teal); font-size: 15px;">
+                TRANG QUẢN TRỊ DỮ LIỆU ĐÀO TẠO
+            </span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <a href="index.html" class="btn btn-outline btn-sm">🎓 Về cổng sinh viên</a>
+            <span id="admin-user-badge" style="font-weight: 600; color: var(--ueh-teal);">Admin</span>
+            <button class="btn btn-outline-danger btn-sm" onclick="ApiClient.logout()">Đăng xuất</button>
+        </div>
+    </header>
+
+    <!-- Admin Main Body -->
+    <main style="max-width: 1440px; margin: 20px auto; padding: 0 20px;">
+        <div class="admin-nav-tabs">
+            <div class="admin-nav-item active" data-admin-tab="schedules" onclick="AdminModule.switchAdminTab('schedules')">
+                📚 Quản lý Lịch học
+            </div>
+            <div class="admin-nav-item" data-admin-tab="exams" onclick="AdminModule.switchAdminTab('exams')">
+                📝 Quản lý Lịch thi
+            </div>
+            <div class="admin-nav-item" data-admin-tab="announcements" onclick="AdminModule.switchAdminTab('announcements')">
+                📢 Quản lý Thông báo
+            </div>
+            <div class="admin-nav-item" data-admin-tab="events" onclick="AdminModule.switchAdminTab('events')">
+                🎪 Quản lý Sự kiện UEH
+            </div>
+        </div>
+
+        <!-- Tab 1: Schedules -->
+        <div id="admin-tab-schedules" class="admin-tab-pane">
+            <div class="admin-grid">
+                <div class="main-content-card">
+                    <h3 style="font-size: 14px; font-weight: 700; color: var(--ueh-teal); margin-bottom: 12px; border-bottom: 1px solid var(--ueh-border); padding-bottom: 6px;">
+                        + Thêm quy tắc lịch học
+                    </h3>
+                    <form id="form-create-sched" onsubmit="AdminModule.createSchedule(event)">
+                        <div class="form-group">
+                            <label class="form-label">Lớp học phần:</label>
+                            <select id="sched-class-id" class="form-control" required>
+                                <option value="1">28C1TEC5500183B01 — Tư duy thiết kế</option>
+                                <option value="2">28C1MAT5801360101 — Tính toán thống kê</option>
+                                <option value="3">28C1MIS50110001 — Tính toán động kế</option>
+                                <option value="4">28C1PUF6041030101 — Nguyên lý kế toán</option>
+                                <option value="5">28C1BUS30120001 — Quản trị học</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Thứ trong tuần:</label>
+                            <select id="sched-day" class="form-control" required>
+                                <option value="1">Thứ Hai</option>
+                                <option value="2">Thứ Ba</option>
+                                <option value="3">Thứ Tư</option>
+                                <option value="4">Thứ Năm</option>
+                                <option value="5">Thứ Sáu</option>
+                                <option value="6">Thứ Bảy</option>
+                                <option value="7">Chủ Nhật</option>
+                            </select>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <div class="form-group">
+                                <label class="form-label">Giờ bắt đầu:</label>
+                                <input type="time" id="sched-start-time" class="form-control" value="07:30" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Giờ kết thúc:</label>
+                                <input type="time" id="sched-end-time" class="form-control" value="11:30" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phòng học:</label>
+                            <input type="text" id="sched-room" class="form-control" placeholder="VD: N2-508">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Giảng viên phụ trách:</label>
+                            <input type="text" id="sched-instructor" class="form-control" placeholder="VD: TS. Nguyễn Văn A">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <div class="form-group">
+                                <label class="form-label">Từ ngày:</label>
+                                <input type="date" id="sched-start-date" class="form-control" value="2026-09-07" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Đến ngày:</label>
+                                <input type="date" id="sched-end-date" class="form-control" value="2027-01-17" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-orange" style="width: 100%;">Lưu quy tắc lịch học</button>
+                    </form>
+                </div>
+
+                <div class="main-content-card">
+                    <h3 style="font-size: 14px; font-weight: 700; color: var(--ueh-teal); margin-bottom: 12px;">
+                        Danh sách các quy tắc lịch học hiện có
+                    </h3>
+                    <div class="table-responsive">
+                        <table class="ueh-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã LHP</th>
+                                    <th>Tên học phần</th>
+                                    <th>Thứ</th>
+                                    <th>Giờ học</th>
+                                    <th>Phòng</th>
+                                    <th>Giảng viên</th>
+                                    <th style="text-align: center;">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-schedules-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Exams -->
+        <div id="admin-tab-exams" class="admin-tab-pane" style="display: none;">
+            <div class="admin-grid">
+                <div class="main-content-card">
+                    <h3 style="font-size: 14px; font-weight: 700; color: var(--ueh-teal); margin-bottom: 12px; border-bottom: 1px solid var(--ueh-border); padding-bottom: 6px;">
+                        + Thêm lịch thi mới
+                    </h3>
+                    <form id="form-create-exam" onsubmit="AdminModule.createExam(event)">
+                        <div class="form-group">
+                            <label class="form-label">Lớp học phần thi:</label>
+                            <select id="exam-class-id" class="form-control" required>
+                                <option value="1">28C1TEC5500183B01 — Tư duy thiết kế</option>
+                                <option value="2">28C1MAT5801360101 — Tính toán thống kê</option>
+                                <option value="3">28C1MIS50110001 — Tính toán động kế</option>
+                                <option value="4">28C1PUF6041030101 — Nguyên lý kế toán</option>
+                                <option value="5">28C1BUS30120001 — Quản trị học</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ngày thi:</label>
+                            <input type="date" id="exam-date" class="form-control" value="2026-11-25" required>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <div class="form-group">
+                                <label class="form-label">Giờ bắt đầu:</label>
+                                <input type="time" id="exam-start-time" class="form-control" value="08:00" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Giờ kết thúc:</label>
+                                <input type="time" id="exam-end-time" class="form-control" value="10:00">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phòng thi & Địa điểm:</label>
+                            <input type="text" id="exam-room" class="form-control" placeholder="Phòng (VD: N2-301)">
+                            <input type="text" id="exam-location" class="form-control" style="margin-top: 6px;" value="UEH Nguyễn Văn Linh">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Hình thức thi:</label>
+                            <select id="exam-form" class="form-control">
+                                <option value="Tự luận">Tự luận</option>
+                                <option value="Trắc nghiệm">Trắc nghiệm</option>
+                                <option value="Dự án">Dự án</option>
+                                <option value="Vấn đáp">Vấn đáp</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ghi chú phòng thi:</label>
+                            <input type="text" id="exam-notes" class="form-control" placeholder="Ghi chú thêm nếu có">
+                        </div>
+                        <button type="submit" class="btn btn-orange" style="width: 100%;">Tạo lịch thi</button>
+                    </form>
+                </div>
+
+                <div class="main-content-card">
+                    <h3 style="font-size: 14px; font-weight: 700; color: var(--ueh-teal); margin-bottom: 12px;">
+                        Danh sách lịch thi sinh viên
+                    </h3>
+                    <div class="table-responsive">
+                        <table class="ueh-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã LHP</th>
+                                    <th>Tên học phần</th>
+                                    <th>Ngày thi</th>
+                                    <th>Giờ thi</th>
+                                    <th>Phòng</th>
+                                    <th>Địa điểm</th>
+                                    <th>Hình thức</th>
+                                    <th style="text-align: center;">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-exams-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Announcements -->
+        <div id="admin-tab-announcements" class="admin-tab-pane" style="display: none;">
+            <div class="admin-grid">
+                <div class="main-content-card">
+                    <h3 style="font-size: 14px; font-weight: 700; color: var(--ueh-teal); margin-bottom: 12px; border-bottom: 1px solid var(--ueh-border); padding-bottom: 6px;">
+                        + Đăng thông báo mới
+                    </h3>
+                    <form id="form-create-ann" onsubmit="AdminModule.createAnnouncement(event)">
+                        <div class="form-group">
+                            <label class="form-label">Tiêu đề thông báo:</label>
+                            <input type="text" id="ann-title" class="form-control" placeholder="Nhập tiêu đề thông báo" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Loại thông báo:</label>
+                            <select id="ann-category" class="form-control">
+                                <option value="Đăng ký học phần">Đăng ký học phần</option>
+                                <option value="Lịch học">Lịch học</option>
+                                <option value="Lịch thi">Lịch thi</option>
+                                <option value="Nộp chứng chỉ">Nộp chứng chỉ</option>
+                                <option value="Học vụ và thủ tục">Học vụ và thủ tục</option>
+                                <option value="Hoạt động sinh viên">Hoạt động sinh viên</option>
+                                <option value="Thông báo chung">Thông báo chung</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Đơn vị / Người gửi:</label>
+                            <input type="text" id="ann-issuer" class="form-control" value="Phòng Đào tạo" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mức độ ưu tiên:</label>
+                            <select id="ann-priority" class="form-control">
+                                <option value="Normal">Normal — Bình thường</option>
+                                <option value="High">High — Quan trọng</option>
+                                <option value="Urgent">Urgent — Khẩn cấp</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Hạn chót nếu có (Deadline):</label>
+                            <input type="datetime-local" id="ann-deadline" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tóm tắt ngắn:</label>
+                            <input type="text" id="ann-summary" class="form-control" placeholder="Tóm tắt 1-2 câu hiển thị trên My Week">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nội dung chi tiết:</label>
+                            <textarea id="ann-content" class="form-control" rows="4" placeholder="Nội dung đầy đủ của thông báo..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-orange" style="width: 100%;">Đăng thông báo</button>
+                    </form>
+                </div>
+
+                <div class="main-content-card">
+                    <h3 style="font-size: 14px; font-weight: 700; color: var(--ueh-teal); margin-bottom: 12px;">
+                        Tất cả thông báo đã đăng
+                    </h3>
+                    <div class="table-responsive">
+                        <table class="ueh-table">
+                            <thead>
+                                <tr>
+                                    <th>Tiêu đề</th>
+                                    <th>Loại</th>
+                                    <th>Người gửi</th>
+                                    <th>Ưu tiên</th>
+                                    <th>Hạn chót</th>
+                                    <th style="text-align: center;">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-ann-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Events -->
+        <div id="admin-tab-events" class="admin-tab-pane" style="display: none;">
+            <div class="admin-grid">
+                <div class="main-content-card">
+                    <h3 style="font-size: 14px; font-weight: 700; color: var(--ueh-teal); margin-bottom: 12px; border-bottom: 1px solid var(--ueh-border); padding-bottom: 6px;">
+                        + Tạo hoạt động / sự kiện UEH
+                    </h3>
+                    <form id="form-create-event" onsubmit="AdminModule.createEvent(event)">
+                        <div class="form-group">
+                            <label class="form-label">Tên sự kiện / workshop:</label>
+                            <input type="text" id="evt-title" class="form-control" placeholder="VD: Workshop Kỹ năng đàm phán" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Thể loại:</label>
+                            <select id="evt-category" class="form-control">
+                                <option value="Workshop">Workshop</option>
+                                <option value="Tuyển dụng">Tuyển dụng / Career Fair</option>
+                                <option value="Seminar">Seminar học thuật</option>
+                                <option value="Thể thao">Thể thao & Rèn luyện</option>
+                                <option value="Văn nghệ">Văn nghệ / Giao lưu</option>
+                            </select>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <div class="form-group">
+                                <label class="form-label">Thời gian bắt đầu:</label>
+                                <input type="datetime-local" id="evt-start" class="form-control" value="2026-10-17T09:00" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Thời gian kết thúc:</label>
+                                <input type="datetime-local" id="evt-end" class="form-control" value="2026-10-17T11:30" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Địa điểm tổ chức:</label>
+                            <input type="text" id="evt-location" class="form-control" value="Hội trường A, Cơ sở Nguyễn Văn Linh" required>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <div class="form-group">
+                                <label class="form-label">Hạn đăng ký:</label>
+                                <input type="datetime-local" id="evt-deadline" class="form-control" value="2026-10-16T18:00">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Số lượng tối đa:</label>
+                                <input type="number" id="evt-max" class="form-control" value="100">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mô tả sự kiện:</label>
+                            <textarea id="evt-desc" class="form-control" rows="3" placeholder="Mô tả nội dung chương trình..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-orange" style="width: 100%;">Tạo sự kiện UEH</button>
+                    </form>
+                </div>
+
+                <div class="main-content-card">
+                    <h3 style="font-size: 14px; font-weight: 700; color: var(--ueh-teal); margin-bottom: 12px;">
+                        Tất cả sự kiện & Số lượng đăng ký
+                    </h3>
+                    <div class="table-responsive">
+                        <table class="ueh-table">
+                            <thead>
+                                <tr>
+                                    <th>Tên sự kiện</th>
+                                    <th>Loại</th>
+                                    <th>Thời gian</th>
+                                    <th>Địa điểm</th>
+                                    <th style="text-align: center;">Đăng ký / Tối đa</th>
+                                    <th>Hạn đăng ký</th>
+                                    <th style="text-align: center;">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-events-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/api-client.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            AdminModule.init();
+        });
+    </script>
+</body>
+</html>

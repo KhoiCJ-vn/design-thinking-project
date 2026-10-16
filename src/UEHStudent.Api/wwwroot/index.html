@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cổng thông tin sinh viên — UEH Student & My Week</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- 1. Top Branding Header -->
+    <header class="top-header">
+        <div class="logo-container">
+            <div class="logo-text">
+                <span class="logo-main">UEH</span>
+                <span class="logo-sub">UNIVERSITY</span>
+            </div>
+            <div style="height: 28px; width: 1px; background: var(--ueh-border); margin: 0 8px;"></div>
+            <span style="font-weight: 700; color: var(--ueh-teal); font-size: 14.5px;">
+                CỔNG THÔNG TIN SINH VIÊN
+            </span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ueh-text-muted);">
+                <span>🌐 Tiếng Việt</span>
+            </div>
+            <div style="height: 18px; width: 1px; background: var(--ueh-border);"></div>
+            <div style="font-size: 13px; font-weight: 600; color: var(--ueh-teal);" id="user-badge">
+                Đang tải...
+            </div>
+            <a href="admin.html" id="admin-link" class="btn btn-outline btn-sm" style="display: none; background: #fff8f5; border-color: var(--ueh-orange); color: var(--ueh-orange);">
+                ⚙️ Quản trị hệ thống
+            </a>
+            <button id="btn-logout" class="btn btn-outline-danger btn-sm">
+                Đăng xuất
+            </button>
+        </div>
+    </header>
+
+    <!-- 2. Dark Teal Top Navigation Bar -->
+    <nav class="top-nav">
+        <ul class="nav-links">
+            <li class="nav-item active">
+                <a href="#" data-tab="my-week">⭐ UEH My Week</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-tab="schedule">Thời khóa biểu</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-tab="exams">Lịch thi</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" data-tab="announcements">Thông báo chung</a>
+            </li>
+        </ul>
+        <div class="nav-user">
+            <span style="font-size: 12px; color: #cbd5e1;">Học kỳ cuối 2026-2027</span>
+        </div>
+    </nav>
+
+    <!-- 3. App Body Layout: Sidebar + Main Content -->
+    <div class="app-container">
+        <!-- Sidebar matching UEH Student structure -->
+        <aside class="app-sidebar">
+            <!-- Box 1: Trang cá nhân -->
+            <div class="sidebar-box">
+                <div class="sidebar-box-header">
+                    <span>👤</span> Trang cá nhân
+                </div>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item active">
+                        <a href="#" data-tab="my-week">
+                            <span>⭐ UEH My Week</span>
+                            <span class="badge-tag orange">Mới</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" data-tab="announcements">
+                            <span>🔔 Thông báo</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Box 2: Tra cứu thông tin -->
+            <div class="sidebar-box">
+                <div class="sidebar-box-header">
+                    <span>🔍</span> Tra cứu thông tin
+                </div>
+                <ul class="sidebar-menu">
+                    <li class="sidebar-menu-item">
+                        <a href="#" data-tab="schedule">
+                            <span>Lịch học (TKB)</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" data-tab="exams">
+                            <span>Lịch thi</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-menu-item">
+                        <a href="#" data-tab="announcements">
+                            <span>Thông báo chung</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Box 3: Quick Info Card -->
+            <div class="sidebar-box" style="padding: 14px; font-size: 12px; background: #fffcf8; border-color: var(--ueh-orange-border);">
+                <div style="font-weight: 700; color: var(--ueh-orange); margin-bottom: 6px;">
+                    💡 Giới thiệu UEH My Week:
+                </div>
+                <p style="color: var(--ueh-text); line-height: 1.5;">
+                    Tính năng tổng hợp lịch học, lịch thi, sự kiện trường và việc cá nhân vào một dòng thời gian duy nhất theo tuần. Bạn có thể chọn bất kỳ ngày nào để xem tuần đó.
+                </p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="app-main">
+            <!-- Tab 1: UEH My Week (Default Active) -->
+            <section id="tab-my-week" class="tab-section">
+                <div class="main-content-card" id="my-week-content">
+                    <div style="text-align: center; padding: 40px;">
+                        <div class="spinner"></div>
+                        <p style="margin-top: 8px; color: var(--ueh-text-muted);">Đang khởi tạo UEH My Week...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 2: Lịch học (Thời khóa biểu) -->
+            <section id="tab-schedule" class="tab-section" style="display: none;">
+                <div class="main-content-card" id="schedule-content">
+                    <div style="text-align: center; padding: 40px;">
+                        <div class="spinner"></div>
+                        <p style="margin-top: 8px; color: var(--ueh-text-muted);">Đang tải thời khóa biểu...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 3: Lịch thi -->
+            <section id="tab-exams" class="tab-section" style="display: none;">
+                <div class="main-content-card" id="exams-content">
+                    <div style="text-align: center; padding: 40px;">
+                        <div class="spinner"></div>
+                        <p style="margin-top: 8px; color: var(--ueh-text-muted);">Đang tải lịch thi...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tab 4: Thông báo chung -->
+            <section id="tab-announcements" class="tab-section" style="display: none;">
+                <div class="main-content-card" id="announcements-content">
+                    <div style="text-align: center; padding: 40px;">
+                        <div class="spinner"></div>
+                        <p style="margin-top: 8px; color: var(--ueh-text-muted);">Đang tải thông báo...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal 1: Thêm việc cá nhân (Personal Task) -->
+    <div id="modal-task" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span>+ Thêm việc cá nhân vào My Week</span>
+                <button class="btn btn-outline btn-sm" onclick="App.closeModal('modal-task')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="task-title">Tiêu đề công việc (*):</label>
+                    <input type="text" id="task-title" class="form-control" placeholder="VD: Làm bài tập nhóm, Đọc giáo trình..." required>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div class="form-group">
+                        <label class="form-label" for="task-planned-date">Ngày thực hiện (*):</label>
+                        <input type="date" id="task-planned-date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="task-time">Giờ dự kiến:</label>
+                        <input type="time" id="task-time" class="form-control" value="08:00">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="task-due-date">Hạn hoàn thành (Deadline nếu có):</label>
+                    <input type="date" id="task-due-date" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="task-desc">Ghi chú chi tiết:</label>
+                    <textarea id="task-desc" class="form-control" rows="3" placeholder="Nhập ghi chú hoặc yêu cầu cụ thể..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="App.closeModal('modal-task')">Hủy bỏ</button>
+                <button class="btn btn-orange" onclick="MyWeekModule.saveNewTask()">Lưu vào lịch</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Lưu thông báo vào lịch cá nhân -->
+    <div id="modal-save-notice" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span>📅 Đưa thông báo vào lịch cá nhân</span>
+                <button class="btn btn-outline btn-sm" onclick="App.closeModal('modal-save-notice')">✕</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="save-notice-id">
+                <div style="margin-bottom: 12px; font-weight: 700; color: var(--ueh-teal);" id="save-notice-title">
+                    Tiêu đề thông báo
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="save-notice-date">Ngày muốn theo dõi / nhắc nhở (*):</label>
+                    <input type="date" id="save-notice-date" class="form-control" required>
+                    <small style="color: var(--ueh-text-muted); font-size: 11px;">
+                        Thông báo sẽ xuất hiện trên dòng thời gian UEH My Week trong tuần chứa ngày này.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="save-notice-note">Ghi chú cá nhân của bạn:</label>
+                    <input type="text" id="save-notice-note" class="form-control" placeholder="VD: Nộp trước 17h, Gửi kèm chứng chỉ gốc...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="App.closeModal('modal-save-notice')">Hủy</button>
+                <button class="btn btn-orange" onclick="MyWeekModule.confirmSaveNotice()">Xác nhận lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Chi tiết thông báo -->
+    <div id="modal-ann-detail" class="modal-overlay">
+        <div class="modal-card" style="max-width: 640px;">
+            <div class="modal-header">
+                <span id="modal-ann-title">Chi tiết thông báo</span>
+                <button class="btn btn-outline btn-sm" onclick="App.closeModal('modal-ann-detail')">✕</button>
+            </div>
+            <div class="modal-body" id="modal-ann-body">
+                <!-- Dynamic Content -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="App.closeModal('modal-ann-detail')">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="js/api-client.js"></script>
+    <script src="js/my-week.js"></script>
+    <script src="js/schedule.js"></script>
+    <script src="js/exams.js"></script>
+    <script src="js/announcements.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
