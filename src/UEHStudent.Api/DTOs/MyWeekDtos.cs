@@ -34,10 +34,12 @@ public class DeadlineItemDto
 {
     public string Id { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
-    public string Type { get; set; } = string.Empty; // "Announcement", "Task", "Event"
+    public string? Subtitle { get; set; }
+    public string Type { get; set; } = string.Empty; // "Việc cá nhân", "Lịch thi", "Sự kiện UEH", "Thông báo học vụ"
     public DateTime Deadline { get; set; }
     public string FormattedDeadline { get; set; } = string.Empty;
     public bool IsUrgent { get; set; }
+    public string TagColor { get; set; } = "default";
 }
 
 public class MyWeekResponse

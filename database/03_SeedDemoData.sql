@@ -267,14 +267,14 @@ VALUES
      'Normal'),
     
     (6,
-     N'Thong bao dieu chinh lich hoc tuan 17 (19/10 - 25/10/2026)',
-     N'Do su kien toan truong, mot so lop hoc phan se duoc dieu chinh lich. Vui long kiem tra lich hoc cap nhat.',
-     N'Dieu chinh lich hoc tuan 17 do su kien toan truong.',
-     N'Cao Thi Xuan Tam',
-     N'Lich hoc',
-     '2026-10-15 14:00:00',
+     N'Nộp đề cương bài tập nhóm môn Tư duy thiết kế',
+     N'Tất cả sinh viên các lớp học phần hoàn thành và nộp đề cương bài tập nhóm môn Tư duy thiết kế cho giảng viên ThS. Nguyễn Quốc Khánh trên hệ thống trước 23:59 ngày 18/10/2026.',
+     N'Nộp đề cương bài tập nhóm môn Tư duy thiết kế cho ThS. Nguyễn Quốc Khánh trước 18/10.',
+     N'Khoa Toán thống kê',
+     N'Học vụ và thủ tục',
+     '2026-10-12 08:00:00',
      '2026-10-25 00:00:00',
-     NULL,
+     '2026-10-18 23:59:59',
      'Urgent'),
     
     (7,
@@ -392,21 +392,21 @@ GO
 
 -- =============================================
 -- 13. PersonalTasks
--- Viec ca nhan mau cua sinh vien 1
+-- Viec ca nhan & bai tap mon hoc cua sinh vien
 -- =============================================
-IF NOT EXISTS (SELECT 1 FROM [dbo].[PersonalTasks] WHERE [StudentId] = 1 AND [Title] = N'Lam bai tap nhom mon Tu duy thiet ke')
+IF NOT EXISTS (SELECT 1 FROM [dbo].[PersonalTasks] WHERE [StudentId] = 1 AND [Title] LIKE N'%Tư duy thiết kế%')
 INSERT INTO [dbo].[PersonalTasks] 
     ([StudentId], [Title], [Description], [PlannedDate], [PlannedTime], [DueDate], [IsCompleted])
 VALUES
-    (1, N'Lam bai tap nhom mon Tu duy thiet ke', 
-        N'Hoan thanh phan cua minh trong bai tap nhom so 3.', 
+    (1, N'Làm bài tập nhóm môn Tư duy thiết kế', 
+        N'Hoàn thành slide và tài liệu nộp ThS. Nguyễn Quốc Khánh.', 
         '2026-10-16', '14:00', '2026-10-18', 0),
-    (1, N'On tap chuong 5 Tinh toan thong ke', 
-        N'Doc lai bai giang va lam bai tap chuong 5.', 
-        '2026-10-17', '19:00', '2026-10-19', 0),
-    (1, N'Nop don xin xac nhan sinh vien',
-        NULL,
-        '2026-10-14', '10:00', '2026-10-15', 1);
+    (1, N'Ôn tập chương 5 môn Tính toán thống kê', 
+        N'Làm bài tập thực hành R/Python cho TS. Lê Thanh Trung.', 
+        '2026-10-17', '19:00', '2026-10-18', 0),
+    (1, N'Nộp case study chương 2 môn Nguyên lý kế toán',
+        N'Bài tập tình huống nhóm cho ThS. Trần Thị Thương.',
+        '2026-10-16', '16:00', '2026-10-17', 0);
 GO
 
 -- =============================================

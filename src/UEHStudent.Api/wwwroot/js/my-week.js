@@ -150,8 +150,8 @@ const MyWeekModule = {
                     <!-- Deadline Radar -->
                     <div class="side-panel">
                         <div class="side-panel-header">
-                            <span>⏳ Hạn chót & Deadline</span>
-                            <span class="badge-tag red">${d.upcomingDeadlines.length}</span>
+                            <span>⏳ Hạn chót & Deadline tuần này</span>
+                            <span class="badge-tag ${d.upcomingDeadlines.length > 0 ? 'red' : 'gray'}">${d.upcomingDeadlines.length}</span>
                         </div>
                         <div class="side-panel-body">
                             ${this.renderDeadlines(d.upcomingDeadlines)}
@@ -243,17 +243,22 @@ const MyWeekModule = {
 
     renderDeadlines(deadlines) {
         if (!deadlines || deadlines.length === 0) {
-            return `<div style="font-size: 12px; color: var(--ueh-text-muted); text-align: center; padding: 12px 0;">Không có deadline sắp tới</div>`;
+            const weekStr = this.data && this.data.formattedWeekRange ? `trong tuần ${this.data.formattedWeekRange}` : 'trong tuần này';
+            return `<div style="font-size: 12px; color: var(--ueh-text-muted); text-align: center; padding: 16px 8px; font-style: italic;">Không có hạn chót hoặc deadline nào ${weekStr}</div>`;
         }
 
         return deadlines.map(item => `
-            <div style="border-left: 3px solid ${item.isUrgent ? 'var(--ueh-red)' : 'var(--ueh-orange)'}; padding: 6px 10px; background: #fafafa; border-radius: var(--radius-sm);">
-                <div style="font-weight: 600; font-size: 12.5px; color: var(--ueh-text-dark);">${item.title}</div>
-                <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--ueh-text-muted); margin-top: 3px;">
-                    <span>${item.type}</span>
-                    <span style="font-weight: 700; color: ${item.isUrgent ? 'var(--ueh-red)' : 'var(--ueh-text-dark)'};">
+            <div style="border-left: 3px solid ${item.isUrgent ? 'var(--ueh-red)' : 'var(--ueh-orange)'}; padding: 8px 10px; background: #fafafa; border-radius: var(--radius-sm); margin-bottom: 8px; transition: background 0.15s ease;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px;">
+                    <div style="font-weight: 600; font-size: 12.5px; color: var(--ueh-text-dark); flex: 1;">${item.title}</div>
+                    <span class="badge-tag ${item.tagColor || (item.isUrgent ? 'red' : 'orange')}">${item.type}</span>
+                </div>
+                ${item.subtitle ? `<div style="font-size: 11.5px; color: var(--ueh-text-muted); margin-top: 3px;">${item.subtitle}</div>` : ''}
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-top: 5px;">
+                    <span style="font-weight: 700; color: ${item.isUrgent ? 'var(--ueh-red)' : 'var(--ueh-orange)'};">
                         ⏰ ${item.formattedDeadline}
                     </span>
+                    ${item.isUrgent ? '<span style="font-size: 10px; color: var(--ueh-red); font-weight: 700;">GẤP</span>' : ''}
                 </div>
             </div>
         `).join('');
