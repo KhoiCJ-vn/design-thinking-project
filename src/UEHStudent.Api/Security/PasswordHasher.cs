@@ -11,11 +11,22 @@ public static class PasswordHasher
     {
         try
         {
-            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+            if (BCrypt.Net.BCrypt.Verify(password, hashedPassword))
+            {
+                return true;
+            }
         }
         catch
         {
-            return false;
+            // Ignore format exception and check fallback
         }
+
+        // Ho tro linh hoat cho moi truong phat trien khi nguoi dung go mat khau truc tiep vao SQL Server
+        if (!string.IsNullOrEmpty(hashedPassword) && hashedPassword == password)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

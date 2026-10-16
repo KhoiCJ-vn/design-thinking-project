@@ -29,10 +29,11 @@
         }
         .admin-grid {
             display: grid;
-            grid-template-columns: 320px 1fr;
+            grid-template-columns: 360px 1fr;
             gap: 20px;
+            align-items: start;
         }
-        @media (max-width: 960px) {
+        @media (max-width: 1024px) {
             .admin-grid { grid-template-columns: 1fr; }
         }
     </style>
@@ -123,15 +124,13 @@
                             <label class="form-label">Giảng viên phụ trách:</label>
                             <input type="text" id="sched-instructor" class="form-control" placeholder="VD: TS. Nguyễn Văn A">
                         </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                            <div class="form-group">
-                                <label class="form-label">Từ ngày:</label>
-                                <input type="date" id="sched-start-date" class="form-control" value="2026-09-07" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Đến ngày:</label>
-                                <input type="date" id="sched-end-date" class="form-control" value="2027-01-17" required>
-                            </div>
+                        <div class="form-group">
+                            <label class="form-label">Áp dụng từ ngày:</label>
+                            <input type="date" id="sched-start-date" class="form-control" value="2026-09-07" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Đến ngày:</label>
+                            <input type="date" id="sched-end-date" class="form-control" value="2027-01-17" required>
                         </div>
                         <button type="submit" class="btn btn-orange" style="width: 100%;">Lưu quy tắc lịch học</button>
                     </form>
@@ -337,29 +336,25 @@
                                 <option value="Văn nghệ">Văn nghệ / Giao lưu</option>
                             </select>
                         </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                            <div class="form-group">
-                                <label class="form-label">Thời gian bắt đầu:</label>
-                                <input type="datetime-local" id="evt-start" class="form-control" value="2026-10-17T09:00" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Thời gian kết thúc:</label>
-                                <input type="datetime-local" id="evt-end" class="form-control" value="2026-10-17T11:30" required>
-                            </div>
+                        <div class="form-group">
+                            <label class="form-label">Thời gian bắt đầu:</label>
+                            <input type="datetime-local" id="evt-start" class="form-control" value="2026-10-17T09:00" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Thời gian kết thúc:</label>
+                            <input type="datetime-local" id="evt-end" class="form-control" value="2026-10-17T11:30" required>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Địa điểm tổ chức:</label>
                             <input type="text" id="evt-location" class="form-control" value="Hội trường A, Cơ sở Nguyễn Văn Linh" required>
                         </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                            <div class="form-group">
-                                <label class="form-label">Hạn đăng ký:</label>
-                                <input type="datetime-local" id="evt-deadline" class="form-control" value="2026-10-16T18:00">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Số lượng tối đa:</label>
-                                <input type="number" id="evt-max" class="form-control" value="100">
-                            </div>
+                        <div class="form-group">
+                            <label class="form-label">Hạn đăng ký:</label>
+                            <input type="datetime-local" id="evt-deadline" class="form-control" value="2026-10-16T18:00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Số lượng người tham gia tối đa:</label>
+                            <input type="number" id="evt-max" class="form-control" value="100" min="1" placeholder="Để trống nếu không giới hạn">
                         </div>
                         <div class="form-group">
                             <label class="form-label">Mô tả sự kiện:</label>

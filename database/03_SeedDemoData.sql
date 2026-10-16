@@ -36,6 +36,9 @@
 
 USE [UEHStudentDB];
 GO
+SET QUOTED_IDENTIFIER ON;
+SET ANSI_NULLS ON;
+GO
 
 -- =============================================
 -- 1. AcademicTerms
@@ -92,28 +95,25 @@ SET IDENTITY_INSERT [dbo].[Students] ON;
 IF NOT EXISTS (SELECT 1 FROM [dbo].[Students] WHERE [StudentId] = 1)
 INSERT INTO [dbo].[Students] ([StudentId], [StudentCode], [FullName], [Faculty], [Major], [CohortYear])
 VALUES
-    (1, N'31251020530', N'Tran Van Hoang',  N'Khoa Cong nghe thong tin kinh doanh', N'He thong thong tin quan ly', 2025),
-    (2, N'31251020845', N'Le Thi Mai Anh',  N'Khoa Cong nghe thong tin kinh doanh', N'He thong thong tin quan ly', 2025);
+    (1, N'31251022130', N'Nguyễn Minh Khôi',  N'Khoa Cong nghe thong tin kinh doanh', N'He thong thong tin quan ly', 2025),
+    (2, N'31251020845', N'Nguyễn Nhựt Thắng',  N'Khoa Cong nghe thong tin kinh doanh', N'He thong thong tin quan ly', 2025);
 
 SET IDENTITY_INSERT [dbo].[Students] OFF;
 GO
 
 -- =============================================
 -- 5. AppUsers
--- LUU Y: PasswordHash la placeholder.
--- Backend se hash mat khau 'Demo@123' cho student, 'Admin@123' cho admin
--- khi khoi tao. Xem README de biet cach thiet lap.
--- Placeholder su dung format: PLACEHOLDER_HASH_<role>
--- Backend startup se kiem tra va thay the bang hash that.
+-- Mat khau ho tro nhap truc tiep (Student1, Student2, Admin@123)
+-- va he thong se tu dong ma hoa BCrypt khi sinh vien / admin dang nhap.
 -- =============================================
 SET IDENTITY_INSERT [dbo].[AppUsers] ON;
 
 IF NOT EXISTS (SELECT 1 FROM [dbo].[AppUsers] WHERE [UserId] = 1)
 INSERT INTO [dbo].[AppUsers] ([UserId], [Username], [PasswordHash], [RoleName], [StudentId])
 VALUES
-    (1, N'admin',       N'PLACEHOLDER_HASH_ADMIN',   'Admin',   NULL),
-    (2, N'tranvanhoang', N'PLACEHOLDER_HASH_STUDENT', 'Student', 1),
-    (3, N'lethimaianh', N'PLACEHOLDER_HASH_STUDENT', 'Student', 2);
+    (1, N'admin',           N'Admin@123', 'Admin',   NULL),
+    (2, N'nguyenminhkhoi',  N'Student1',  'Student', 1),
+    (3, N'nguyennhatthang', N'Student2',  'Student', 2);
 
 SET IDENTITY_INSERT [dbo].[AppUsers] OFF;
 GO

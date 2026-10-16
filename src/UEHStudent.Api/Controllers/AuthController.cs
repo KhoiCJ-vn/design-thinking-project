@@ -47,6 +47,13 @@ public class AuthController : ControllerBase
         }
 
         user.LastLoginAt = DateTime.UtcNow;
+
+        // Neu mat khau trong database dang o dang text thuan, tu dong nang cap thanh BCrypt hash
+        if (!user.PasswordHash.StartsWith("$2"))
+        {
+            user.PasswordHash = PasswordHasher.Hash(request.Password);
+        }
+
         await _context.SaveChangesAsync();
 
         var token = _jwtService.GenerateToken(user, user.Student);
