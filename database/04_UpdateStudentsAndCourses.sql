@@ -1,4 +1,4 @@
-/*
+﻿/*
 =============================================
   UEH Student My Week — Update Students and Courses
   File: 04_UpdateStudentsAndCourses.sql

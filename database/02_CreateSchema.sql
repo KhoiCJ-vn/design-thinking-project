@@ -1,4 +1,4 @@
-/*
+﻿/*
 =============================================
   UEH Student My Week — Create Schema
   File: 02_CreateSchema.sql

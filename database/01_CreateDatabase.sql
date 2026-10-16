@@ -1,4 +1,4 @@
-/*
+﻿/*
 =============================================
   UEH Student My Week — Create Database
   File: 01_CreateDatabase.sql
