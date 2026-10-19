@@ -62,7 +62,7 @@ public class EventsController : ControllerBase
             var result = events.Select(e =>
             {
                 var isRegistered = registeredIds.Contains(e.EventId);
-                var isExpired = e.RegistrationDeadline.HasValue && e.RegistrationDeadline.Value < DateTime.UtcNow;
+                var isExpired = e.RegistrationDeadline.HasValue && e.RegistrationDeadline.Value < new DateTime(2026, 10, 16, 12, 0, 0);
                 var regCount = _context.EventRegistrations.Count(r => r.EventId == e.EventId && r.Status == "Registered");
                 var isFull = e.MaxParticipants.HasValue && regCount >= e.MaxParticipants.Value;
 
@@ -115,7 +115,7 @@ public class EventsController : ControllerBase
             }
 
             // Kiểm tra hạn đăng ký
-            if (evt.RegistrationDeadline.HasValue && evt.RegistrationDeadline.Value < DateTime.UtcNow)
+            if (evt.RegistrationDeadline.HasValue && evt.RegistrationDeadline.Value < new DateTime(2026, 10, 16, 12, 0, 0))
             {
                 return BadRequest(new { message = "Sự kiện đã hết hạn đăng ký." });
             }

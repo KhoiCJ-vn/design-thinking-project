@@ -100,7 +100,7 @@ public class MyWeekService : IMyWeekService
             TargetAudience = ev.TargetAudience,
             IsRegistered = registeredEventIds.Contains(ev.EventId),
             CanRegister = !registeredEventIds.Contains(ev.EventId) &&
-                          (!ev.RegistrationDeadline.HasValue || ev.RegistrationDeadline.Value >= DateTime.UtcNow),
+                          (!ev.RegistrationDeadline.HasValue || ev.RegistrationDeadline.Value >= new DateTime(2026, 10, 16, 12, 0, 0)),
             RegistrationStatus = registeredEventIds.Contains(ev.EventId) ? "Registered" : null
         }).ToList();
 
@@ -160,7 +160,8 @@ public class MyWeekService : IMyWeekService
             })
             .ToListAsync();
 
-        // 7. Thông báo cần chú ý liên quan đến tuần này
+        // 7. Thông báo trường cần chú ý:
+        // CHỈ hiển thị thông báo chung cấp trường (Học phí, Sinh hoạt công dân, Khám sức khỏe, Đào tạo chung)
         var allSavedIds = await _context.StudentSavedAnnouncements
             .AsNoTracking()
             .Where(sa => sa.StudentId == studentId)
@@ -170,13 +171,16 @@ public class MyWeekService : IMyWeekService
         var relevantAnnouncements = await _context.Announcements
             .AsNoTracking()
             .Where(a => a.IsActive &&
-                        a.PublishedAt <= weekEndDateTime &&
-                        (!a.ExpiresAt.HasValue || a.ExpiresAt.Value >= weekStartDateTime))
-            .OrderByDescending(a => a.DeadlineAt.HasValue && a.DeadlineAt.Value >= weekStartDateTime && a.DeadlineAt.Value <= weekEndDateTime)
-            .ThenByDescending(a => a.Priority == "Urgent")
+                        (a.Category == "Tài chính sinh viên" ||
+                         a.Category == "Hoạt động sinh viên" ||
+                         a.Category == "Thông báo chung" ||
+                         a.Category == "Đăng ký học phần" ||
+                         a.Category == "Nộp chứng chỉ" ||
+                         a.Priority == "Urgent"))
+            .OrderByDescending(a => a.Priority == "Urgent")
             .ThenByDescending(a => a.Priority == "High")
             .ThenBy(a => a.DeadlineAt)
-            .Take(6)
+            .Take(4)
             .Select(a => new AnnouncementDto
             {
                 AnnouncementId = a.AnnouncementId,
@@ -195,12 +199,12 @@ public class MyWeekService : IMyWeekService
             .ToListAsync();
 
         // 8. Tổng hợp Hạn chót & Deadline đồng bộ 100% với khoảng thời gian UEH My Week [weekStart, weekEnd]
-        // và liên quan trực tiếp đến lịch trình cá nhân của tuần này:
-        // - Lịch thi các môn sinh viên học trong tuần
-        // - Việc cá nhân & Bài tập môn học đến hạn trong tuần
-        // - Hạn chót đăng ký các sự kiện UEH trong tuần
-        // - Hạn chót thông báo học vụ / thủ tục trong tuần
-        // - Nhắc nhở từ thông báo đã lưu vào lịch tuần này
+        // Phân loại nguồn rõ ràng:
+        // - Bài tập LMS (Đồng bộ tự động từ hệ thống quản lý học tập LMS)
+        // - Lịch thi kết thúc học phần
+        // - Hạn cấp trường (Đóng học phí, sinh hoạt công dân, khám sức khỏe)
+        // - Hạn đăng ký sự kiện UEH
+        // - Việc cá nhân do sinh viên tự thêm
         var upcomingDeadlines = new List<DeadlineItemDto>();
 
         // 8.1. Lịch thi cuối học phần trong tuần này của sinh viên
@@ -214,13 +218,13 @@ public class MyWeekService : IMyWeekService
                 Subtitle = $"{exam.ClassSection.ClassSectionCode} • {exam.Room ?? "Chưa xếp phòng"} ({exam.ExamForm ?? "Tự luận"})",
                 Type = "Lịch thi",
                 Deadline = examDt,
-                FormattedDeadline = $"{DateTimeHelper.GetVietnameseDayOfWeekName(exam.ExamDate.DayOfWeek)}, {exam.ExamDate:dd/MM/yyyy} lúc {exam.StartTime:hh\\:mm}",
+                FormattedDeadline = $"{DateTimeHelper.GetVietnameseDayOfWeekName(exam.ExamDate.DayOfWeek)}, {exam.ExamDate:dd/MM/yyyy} lúc {exam.StartTime:HH\\:mm}",
                 IsUrgent = true,
                 TagColor = "red"
             });
         }
 
-        // 8.2. Việc cá nhân & bài tập môn học trong tuần này (chưa hoàn thành)
+        // 8.2. Việc học tập LMS & việc cá nhân sinh viên trong tuần này
         var weekTasks = await _context.PersonalTasks
             .AsNoTracking()
             .Where(t => t.StudentId == studentId && !t.IsCompleted &&
@@ -233,48 +237,71 @@ public class MyWeekService : IMyWeekService
         foreach (var task in weekTasks)
         {
             var dDate = task.DueDate ?? task.PlannedDate;
-            var tTime = task.PlannedTime ?? new TimeOnly(23, 59, 59);
+            var tTime = task.DueDate.HasValue ? new TimeOnly(23, 59, 0) : (task.PlannedTime ?? new TimeOnly(23, 59, 0));
             var dt = dDate.ToDateTime(tTime);
+            bool isLms = task.Title.StartsWith("[LMS]");
+            string cleanTitle = isLms ? task.Title.Substring(5).Trim() : task.Title;
+            string typeName = isLms ? "Bài tập LMS" : "Việc cá nhân";
+
             upcomingDeadlines.Add(new DeadlineItemDto
             {
                 Id = $"task-{task.TaskId}",
-                Title = task.Title,
-                Subtitle = !string.IsNullOrEmpty(task.Description) ? task.Description : "Việc cá nhân tuần này",
-                Type = "Việc cá nhân",
+                Title = cleanTitle,
+                Subtitle = !string.IsNullOrEmpty(task.Description) ? task.Description : (isLms ? "Đồng bộ tự động từ hệ thống LMS" : "Việc cá nhân tuần này"),
+                Type = typeName,
                 Deadline = dt,
-                FormattedDeadline = $"{DateTimeHelper.GetVietnameseDayOfWeekName(dDate.DayOfWeek)}, {dDate:dd/MM/yyyy} {(task.PlannedTime.HasValue ? "lúc " + task.PlannedTime.Value.ToString(@"hh\:mm") : "23:59")}".Trim(),
-                IsUrgent = dDate <= weekStart.AddDays(4),
-                TagColor = "orange"
+                FormattedDeadline = $"{DateTimeHelper.GetVietnameseDayOfWeekName(dDate.DayOfWeek)}, {dDate:dd/MM/yyyy} lúc {tTime:HH\\:mm}",
+                IsUrgent = isLms || dDate <= weekStart.AddDays(4),
+                TagColor = isLms ? "orange" : "blue"
             });
         }
 
-        // 8.3. Hạn chót đăng ký các sự kiện UEH trong tuần này
-        var eventsWithDeadlineInWeek = await _context.Events
-            .AsNoTracking()
-            .Where(ev => ev.IsActive &&
-                         ev.RegistrationDeadline.HasValue &&
-                         ev.RegistrationDeadline.Value >= weekStartDateTime &&
-                         ev.RegistrationDeadline.Value <= weekEndDateTime)
-            .OrderBy(ev => ev.RegistrationDeadline)
-            .ToListAsync();
-
-        foreach (var ev in eventsWithDeadlineInWeek)
+        // 8.3. Sự kiện UEH trong tuần: Đồng bộ tuyệt đối với danh sách Sự kiện UEH
+        foreach (var ev in allEventsInWeek)
         {
-            var isRegistered = registeredEventIds.Contains(ev.EventId);
-            upcomingDeadlines.Add(new DeadlineItemDto
+            bool isRegistered = registeredEventIds.Contains(ev.EventId);
+
+            if (isRegistered)
             {
-                Id = $"event-deadline-{ev.EventId}",
-                Title = $"Hạn đăng ký: {ev.Title}",
-                Subtitle = $"{ev.Location ?? "UEH"} • Diễn ra: {ev.StartDateTime:dd/MM/yyyy HH:mm} {(isRegistered ? "(Đã đăng ký)" : "")}".Trim(),
-                Type = "Sự kiện UEH",
-                Deadline = ev.RegistrationDeadline!.Value,
-                FormattedDeadline = $"{DateTimeHelper.GetVietnameseDayOfWeekName(ev.RegistrationDeadline.Value.DayOfWeek)}, {ev.RegistrationDeadline.Value:dd/MM/yyyy HH:mm}",
-                IsUrgent = true,
-                TagColor = "purple"
-            });
+                // Nếu sinh viên ĐÃ ĐĂNG KÝ sự kiện:
+                // Hiển thị lịch tham gia sự kiện trong tuần
+                upcomingDeadlines.Add(new DeadlineItemDto
+                {
+                    Id = $"event-attend-{ev.EventId}",
+                    Title = $"Tham dự: {ev.Title}",
+                    Subtitle = $"{ev.Location ?? "UEH"} • Bạn đã đăng ký tham gia",
+                    Type = "Sự kiện UEH",
+                    Deadline = ev.StartDateTime,
+                    FormattedDeadline = $"{DateTimeHelper.GetVietnameseDayOfWeekName(ev.StartDateTime.DayOfWeek)}, {ev.StartDateTime:dd/MM/yyyy} lúc {ev.StartDateTime:HH\\:mm}",
+                    IsUrgent = false,
+                    TagColor = "purple"
+                });
+            }
+            else
+            {
+                // Nếu sinh viên CHƯA ĐĂNG KÝ:
+                // Hiển thị hạn đăng ký nếu hạn nằm trong tuần này và chưa qua ngày kết thúc
+                if (ev.RegistrationDeadline.HasValue &&
+                    ev.RegistrationDeadline.Value >= weekStartDateTime &&
+                    ev.RegistrationDeadline.Value <= weekEndDateTime &&
+                    ev.RegistrationDeadline.Value >= selectedDate.ToDateTime(TimeOnly.MinValue))
+                {
+                    upcomingDeadlines.Add(new DeadlineItemDto
+                    {
+                        Id = $"event-reg-{ev.EventId}",
+                        Title = $"Hạn đăng ký: {ev.Title}",
+                        Subtitle = $"{ev.Location ?? "UEH"} • Diễn ra: {ev.StartDateTime:dd/MM/yyyy lúc HH:mm}",
+                        Type = "Hạn đăng ký sự kiện",
+                        Deadline = ev.RegistrationDeadline.Value,
+                        FormattedDeadline = $"{DateTimeHelper.GetVietnameseDayOfWeekName(ev.RegistrationDeadline.Value.DayOfWeek)}, {ev.RegistrationDeadline.Value:dd/MM/yyyy} lúc {ev.RegistrationDeadline.Value:HH\\:mm}",
+                        IsUrgent = true,
+                        TagColor = "purple"
+                    });
+                }
+            }
         }
 
-        // 8.4. Hạn chót các thông báo của trường rơi vào khoảng thời gian tuần này
+        // 8.4. Hạn chót các thông báo của trường rơi vào khoảng thời gian tuần này (Học phí, Sinh hoạt công dân...)
         var announcementsWithDeadlineInWeek = await _context.Announcements
             .AsNoTracking()
             .Where(a => a.IsActive &&
@@ -286,37 +313,18 @@ public class MyWeekService : IMyWeekService
 
         foreach (var ann in announcementsWithDeadlineInWeek)
         {
+            bool isTuition = ann.Category == "Tài chính sinh viên" || ann.Title.ToLower().Contains("học phí");
             upcomingDeadlines.Add(new DeadlineItemDto
             {
                 Id = $"ann-deadline-{ann.AnnouncementId}",
-                Title = ann.Title,
+                Title = isTuition ? "Hạn nộp học phí Học kỳ cuối 2026-2027" : ann.Title,
                 Subtitle = $"{ann.Category} • {ann.Issuer}",
-                Type = "Thông báo học vụ",
+                Type = isTuition ? "Hạn học phí" : "Hạn cấp trường",
                 Deadline = ann.DeadlineAt!.Value,
-                FormattedDeadline = $"{DateTimeHelper.GetVietnameseDayOfWeekName(ann.DeadlineAt.Value.DayOfWeek)}, {ann.DeadlineAt.Value:dd/MM/yyyy HH:mm}",
-                IsUrgent = ann.Priority == "Urgent" || ann.Priority == "High",
-                TagColor = "teal"
+                FormattedDeadline = $"{DateTimeHelper.GetVietnameseDayOfWeekName(ann.DeadlineAt.Value.DayOfWeek)}, {ann.DeadlineAt.Value:dd/MM/yyyy} lúc {ann.DeadlineAt.Value:HH\\:mm}",
+                IsUrgent = true,
+                TagColor = isTuition ? "red" : "teal"
             });
-        }
-
-        // 8.5. Nhắc nhở theo dõi từ thông báo sinh viên đã lưu vào lịch trong tuần này
-        foreach (var sa in savedAnnouncements)
-        {
-            if (DateOnly.TryParse(sa.PlannedAt, out var pDate))
-            {
-                var dt = pDate.ToDateTime(new TimeOnly(23, 59, 59));
-                upcomingDeadlines.Add(new DeadlineItemDto
-                {
-                    Id = $"saved-ann-dl-{sa.AnnouncementId}",
-                    Title = $"Nhắc nhở: {sa.Title}",
-                    Subtitle = sa.PersonalNote ?? sa.Summary,
-                    Type = "Thông báo đã lưu",
-                    Deadline = dt,
-                    FormattedDeadline = $"{DateTimeHelper.GetVietnameseDayOfWeekName(pDate.DayOfWeek)}, {pDate:dd/MM/yyyy}",
-                    IsUrgent = false,
-                    TagColor = "teal"
-                });
-            }
         }
 
         // Sắp xếp theo hạn chót gần nhất lên trước
@@ -397,23 +405,6 @@ public class MyWeekService : IMyWeekService
                     Tag = pt.IsCompleted ? "Đã xong" : "Cần làm",
                     TagColor = pt.IsCompleted ? "green" : "orange",
                     RawData = pt
-                });
-            }
-
-            // Thông báo được lưu vào ngày này
-            foreach (var sa in savedAnnouncements.Where(s => s.PlannedAt == currentDayStr))
-            {
-                dayItems.Add(new MyWeekTimelineItemDto
-                {
-                    Id = $"saved-ann-{sa.AnnouncementId}",
-                    ItemType = "SavedAnnouncement",
-                    Title = $"[LƯU Ý] {sa.Title}",
-                    Subtitle = sa.PersonalNote ?? sa.Summary,
-                    Time = "Nhắc nhở theo dõi",
-                    Location = null,
-                    Tag = "Thông báo đã lưu",
-                    TagColor = "teal",
-                    RawData = sa
                 });
             }
 

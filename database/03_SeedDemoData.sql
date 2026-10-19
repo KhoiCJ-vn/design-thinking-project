@@ -256,44 +256,44 @@ VALUES
      'Normal'),
     
     (5,
-     N'HOC KY CUOI 2026 - THONG BAO LICH SINH HOAT CONG DAN',
-     N'Sinh vien tham gia sinh hoat cong dan dau hoc ky theo lich cu the cua tung khoa.',
-     N'Sinh hoat cong dan dau HK cuoi 2026.',
-     N'Truong Nhat Uyen',
-     N'Hoat dong sinh vien',
+     N'Thông báo về việc sinh hoạt công dân sinh viên năm học 2026-2027',
+     N'Sinh viên tham gia sinh hoạt công dân đầu năm học theo lịch quy định của Trường và Khoa để hoàn thành nghĩa vụ rèn luyện.',
+     N'Sinh hoạt công dân sinh viên năm học 2026-2027.',
+     N'Phòng Chăm sóc và Hỗ trợ người học',
+     N'Hoạt động sinh viên',
      '2026-09-18 08:00:00',
      '2026-10-31 00:00:00',
      '2026-10-25 23:59:59',
      'Normal'),
     
     (6,
-     N'Nộp đề cương bài tập nhóm môn Tư duy thiết kế',
-     N'Tất cả sinh viên các lớp học phần hoàn thành và nộp đề cương bài tập nhóm môn Tư duy thiết kế cho giảng viên ThS. Nguyễn Quốc Khánh trên hệ thống trước 23:59 ngày 18/10/2026.',
-     N'Nộp đề cương bài tập nhóm môn Tư duy thiết kế cho ThS. Nguyễn Quốc Khánh trước 18/10.',
-     N'Khoa Toán thống kê',
-     N'Học vụ và thủ tục',
-     '2026-10-12 08:00:00',
+     N'Thông báo về việc đóng học phí Học kỳ cuối năm học 2026-2027',
+     N'Nhà trường thông báo thời hạn đóng học phí Học kỳ cuối năm học 2026-2027. Đề nghị sinh viên hoàn tất học phí đúng hạn quy định trước 23:59 ngày 18/10/2026.',
+     N'Thời hạn nộp học phí Học kỳ cuối năm học 2026-2027 trước 23:59 ngày 18/10/2026.',
+     N'Phòng Kế hoạch - Tài chính',
+     N'Tài chính sinh viên',
+     '2026-10-01 08:00:00',
      '2026-10-25 00:00:00',
      '2026-10-18 23:59:59',
      'Urgent'),
     
     (7,
-     N'Thong bao ve thoi han hoan thanh thu tuc hoc vu',
-     N'Sinh vien can hoan thanh cac thu tuc hoc vu con ton dong truoc ngay 20/10/2026.',
-     N'Han hoan thanh thu tuc hoc vu: 20/10/2026.',
-     N'Truong Nhat Uyen',
-     N'Hoc vu va thu tuc',
+     N'Thông báo về thời hạn hoàn thành thủ tục học vụ đợt 2',
+     N'Sinh viên cần hoàn thành các thủ tục học vụ còn tồn đọng trước ngày 20/10/2026.',
+     N'Hạn hoàn thành thủ tục học vụ: 20/10/2026.',
+     N'Phòng Quản lý đào tạo - Khảo thí',
+     N'Thông báo chung',
      '2026-10-10 08:00:00',
      '2026-10-21 00:00:00',
      '2026-10-20 23:59:59',
      'High'),
     
     (8,
-     N'Chuong trinh kham suc khoe sinh vien nam 2026',
-     N'Chuong trinh kham suc khoe dinh ky cho sinh vien nam 2026 dien ra tu ngay 20/10 den 31/10/2026.',
-     N'Kham suc khoe dinh ky 20/10 - 31/10/2026.',
-     N'Nguyen Phuong Thao',
-     N'Thong bao chung',
+     N'Chương trình khám sức khỏe định kỳ sinh viên năm 2026',
+     N'Chương trình khám sức khỏe định kỳ cho sinh viên năm 2026 diễn ra từ ngày 20/10 đến 31/10/2026 tại Trạm Y tế UEH Cơ sở Nguyễn Văn Linh.',
+     N'Khám sức khỏe định kỳ sinh viên 20/10 - 31/10/2026.',
+     N'Trạm Y tế UEH',
+     N'Thông báo chung',
      '2026-10-08 09:00:00',
      '2026-11-01 00:00:00',
      '2026-10-31 23:59:59',
@@ -329,54 +329,54 @@ INSERT INTO [dbo].[Events]
     ([EventId], [Title], [Description], [Category], [StartDateTime], [EndDateTime], [Location], [RegistrationDeadline], [MaxParticipants], [TargetAudience])
 VALUES
     (1,
-     N'Workshop: Ky nang thuyet trinh hieu qua',
-     N'Workshop trang bi ky nang thuyet trinh chuyen nghiep, phu hop cho sinh vien cac nganh. Dien gia: ThS. Nguyen Minh Duc.',
+     N'Workshop: Kỹ năng thuyết trình hiệu quả',
+     N'Workshop trang bị kỹ năng thuyết trình chuyên nghiệp, tự tin trước đám đông. Diễn giả: ThS. Nguyễn Minh Đức.',
      N'Workshop',
      '2026-10-17 09:00:00', '2026-10-17 11:30:00',
-     N'Hoi truong A, Co so Nguyen Van Linh',
+     N'Hội trường A, Cơ sở Nguyễn Văn Linh',
      '2026-10-16 18:00:00',
      100,
-     N'Toan truong'),
+     N'Toàn trường'),
     
     (2,
      N'UEH Career Fair 2026',
-     N'Ngay hoi viec lam UEH 2026 voi su tham gia cua hon 50 doanh nghiep. Co hoi thuc tap va tuyen dung truc tiep.',
-     N'Tuyen dung',
+     N'Ngày hội việc làm UEH 2026 với sự tham gia của hơn 50 doanh nghiệp hàng đầu. Cơ hội thực tập và tuyển dụng trực tiếp.',
+     N'Tuyển dụng',
      '2026-10-22 08:00:00', '2026-10-22 17:00:00',
-     N'Khu vuc san truong, Co so Nguyen Van Linh',
+     N'Khu vực sân trường, Cơ sở Nguyễn Văn Linh',
      '2026-10-20 23:59:59',
      500,
-     N'Toan truong'),
+     N'Toàn trường'),
     
     (3,
-     N'Seminar: Chuyen doi so trong ke toan',
-     N'Seminar chuyen de ve ung dung cong nghe so trong linh vuc ke toan va kiem toan.',
+     N'Seminar: Chuyển đổi số trong kế toán',
+     N'Seminar chuyên đề về ứng dụng công nghệ số và AI trong lĩnh vực kế toán - kiểm toán hiện đại.',
      N'Seminar',
      '2026-10-15 14:00:00', '2026-10-15 16:30:00',
-     N'Phong N2-301, Co so Nguyen Van Linh',
+     N'Phòng N2-301, Cơ sở Nguyễn Văn Linh',
      '2026-10-14 23:59:59',
      80,
-     N'Khoa Ke toan'),
+     N'Khoa Kế toán'),
     
     (4,
-     N'Giai chay UEH Marathon 2026',
-     N'Giai chay bo thuong nien cua UEH, huong ung phong trao ren luyen suc khoe.',
-     N'The thao',
+     N'Giải chạy UEH Marathon 2026',
+     N'Giải chạy bộ thường niên của UEH, hưởng ứng phong trào rèn luyện sức khỏe sinh viên.',
+     N'Thể thao',
      '2026-10-25 06:00:00', '2026-10-25 10:00:00',
-     N'San van dong khu vuc Nguyen Van Linh',
+     N'Sân vận động khu vực Nguyễn Văn Linh',
      '2026-10-23 23:59:59',
      300,
-     N'Toan truong'),
+     N'Toàn trường'),
     
     (5,
-     N'Workshop: Python cho phan tich du lieu',
-     N'Workshop thuc hanh Python co ban cho phan tich du lieu, danh cho sinh vien chua co kinh nghiem lap trinh.',
+     N'Workshop: Python cho phân tích dữ liệu',
+     N'Workshop thực hành lập trình Python ứng dụng trong phân tích dữ liệu kinh doanh cho sinh viên.',
      N'Workshop',
      '2026-10-30 09:00:00', '2026-10-30 12:00:00',
-     N'Phong may tinh N4-201',
+     N'Phòng máy tính N4-201, Cơ sở Nguyễn Văn Linh',
      '2026-10-28 23:59:59',
      40,
-     N'Toan truong');
+     N'Toàn trường');
 
 SET IDENTITY_INSERT [dbo].[Events] OFF;
 GO
@@ -392,33 +392,71 @@ GO
 
 -- =============================================
 -- 13. PersonalTasks
--- Viec ca nhan & bai tap mon hoc cua sinh vien
+-- Viec ca nhan & Bai tap LMS dong bo tu dong cho 7 sinh vien
 -- =============================================
-IF NOT EXISTS (SELECT 1 FROM [dbo].[PersonalTasks] WHERE [StudentId] = 1 AND [Title] LIKE N'%Tư duy thiết kế%')
+IF NOT EXISTS (SELECT 1 FROM [dbo].[PersonalTasks] WHERE [StudentId] = 1 AND [Title] LIKE N'%[LMS]%')
 INSERT INTO [dbo].[PersonalTasks] 
     ([StudentId], [Title], [Description], [PlannedDate], [PlannedTime], [DueDate], [IsCompleted])
 VALUES
-    (1, N'Làm bài tập nhóm môn Tư duy thiết kế', 
-        N'Hoàn thành slide và tài liệu nộp ThS. Nguyễn Quốc Khánh.', 
+    -- Sinh vien 1
+    (1, N'[LMS] Bài tập nhóm môn Tư duy thiết kế', 
+        N'Đồng bộ từ LMS • Giảng viên: ThS. Nguyễn Quốc Khánh. Nộp slide và tài liệu trước 23:59.', 
         '2026-10-16', '14:00', '2026-10-18', 0),
-    (1, N'Ôn tập chương 5 môn Tính toán thống kê', 
-        N'Làm bài tập thực hành R/Python cho TS. Lê Thanh Trung.', 
+    (1, N'[LMS] Thực hành R/Python chương 5 - Môn Tính toán thống kê', 
+        N'Đồng bộ từ LMS • Giảng viên: TS. Lê Thanh Trung. Nộp file script mã nguồn.', 
         '2026-10-17', '19:00', '2026-10-18', 0),
-    (1, N'Nộp case study chương 2 môn Nguyên lý kế toán',
-        N'Bài tập tình huống nhóm cho ThS. Trần Thị Thương.',
-        '2026-10-16', '16:00', '2026-10-17', 0);
+    (1, N'Chuẩn bị case study thảo luận môn Quản trị học',
+        N'Đọc trước tình huống quản trị chương 4 để phát biểu.',
+        '2026-10-16', '16:00', '2026-10-17', 0),
+    -- Sinh vien 2
+    (2, N'[LMS] Bài tập nhóm môn Tư duy thiết kế', 
+        N'Đồng bộ từ LMS • Giảng viên: ThS. Nguyễn Quốc Khánh. Nộp slide và tài liệu trước 23:59.', 
+        '2026-10-16', '14:00', '2026-10-18', 0),
+    (2, N'[LMS] Thực hành R/Python chương 5 - Môn Tính toán thống kê', 
+        N'Đồng bộ từ LMS • Giảng viên: TS. Lê Thanh Trung. Nộp file script mã nguồn.', 
+        '2026-10-17', '19:00', '2026-10-18', 0),
+    -- Sinh vien 3
+    (3, N'[LMS] Bài tập nhóm môn Tư duy thiết kế', 
+        N'Đồng bộ từ LMS • Giảng viên: ThS. Nguyễn Quốc Khánh. Nộp slide và tài liệu trước 23:59.', 
+        '2026-10-16', '14:00', '2026-10-18', 0),
+    (3, N'[LMS] Thực hành R/Python chương 5 - Môn Tính toán thống kê', 
+        N'Đồng bộ từ LMS • Giảng viên: TS. Lê Thanh Trung. Nộp file script mã nguồn.', 
+        '2026-10-17', '19:00', '2026-10-18', 0),
+    -- Sinh vien 4
+    (4, N'[LMS] Bài tập nhóm môn Tư duy thiết kế', 
+        N'Đồng bộ từ LMS • Giảng viên: ThS. Nguyễn Quốc Khánh. Nộp slide và tài liệu trước 23:59.', 
+        '2026-10-16', '14:00', '2026-10-18', 0),
+    (4, N'[LMS] Thực hành R/Python chương 5 - Môn Tính toán thống kê', 
+        N'Đồng bộ từ LMS • Giảng viên: TS. Lê Thanh Trung. Nộp file script mã nguồn.', 
+        '2026-10-17', '19:00', '2026-10-18', 0),
+    -- Sinh vien 5
+    (5, N'[LMS] Bài tập nhóm môn Tư duy thiết kế', 
+        N'Đồng bộ từ LMS • Giảng viên: ThS. Nguyễn Quốc Khánh. Nộp slide và tài liệu trước 23:59.', 
+        '2026-10-16', '14:00', '2026-10-18', 0),
+    (5, N'[LMS] Thực hành R/Python chương 5 - Môn Tính toán thống kê', 
+        N'Đồng bộ từ LMS • Giảng viên: TS. Lê Thanh Trung. Nộp file script mã nguồn.', 
+        '2026-10-17', '19:00', '2026-10-18', 0),
+    -- Sinh vien 6
+    (6, N'[LMS] Bài tập nhóm môn Tư duy thiết kế', 
+        N'Đồng bộ từ LMS • Giảng viên: ThS. Nguyễn Quốc Khánh. Nộp slide và tài liệu trước 23:59.', 
+        '2026-10-16', '14:00', '2026-10-18', 0),
+    (6, N'[LMS] Thực hành R/Python chương 5 - Môn Tính toán thống kê', 
+        N'Đồng bộ từ LMS • Giảng viên: TS. Lê Thanh Trung. Nộp file script mã nguồn.', 
+        '2026-10-17', '19:00', '2026-10-18', 0),
+    -- Sinh vien 7
+    (7, N'[LMS] Bài tập nhóm môn Tư duy thiết kế', 
+        N'Đồng bộ từ LMS • Giảng viên: ThS. Nguyễn Quốc Khánh. Nộp slide và tài liệu trước 23:59.', 
+        '2026-10-16', '14:00', '2026-10-18', 0),
+    (7, N'[LMS] Thực hành R/Python chương 5 - Môn Tính toán thống kê', 
+        N'Đồng bộ từ LMS • Giảng viên: TS. Lê Thanh Trung. Nộp file script mã nguồn.', 
+        '2026-10-17', '19:00', '2026-10-18', 0);
 GO
 
 -- =============================================
 -- 14. StudentSavedAnnouncements
--- Sinh vien 1 da luu thong bao 1 (DKHP) vao lich ca nhan
+-- Không nạp sẵn dữ liệu giả để giữ thông báo luôn sạch sẽ và tập trung
 -- =============================================
-IF NOT EXISTS (SELECT 1 FROM [dbo].[StudentSavedAnnouncements] WHERE [StudentId] = 1 AND [AnnouncementId] = 1)
-INSERT INTO [dbo].[StudentSavedAnnouncements]
-    ([StudentId], [AnnouncementId], [PlannedAt], [PersonalNote])
-VALUES
-    (1, 1, '2026-11-01', N'Bat dau dang ky hoc phan ngay dau tien'),
-    (1, 2, '2026-10-25', N'Chuan bi ho so nop chung chi TA');
+-- (Bảng được quản lý linh hoạt khi cần thiết)
 GO
 
 PRINT N'';

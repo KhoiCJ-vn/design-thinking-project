@@ -122,7 +122,7 @@ const MyWeekModule = {
                     <div class="summary-icon teal">🔔</div>
                     <div class="summary-info">
                         <div class="num">${d.summary.importantAnnouncementsCount}</div>
-                        <div class="label">Thông báo cần chú ý</div>
+                        <div class="label">Thông báo trường</div>
                     </div>
                 </div>
             </div>
@@ -172,7 +172,7 @@ const MyWeekModule = {
                     <!-- Important Notices -->
                     <div class="side-panel">
                         <div class="side-panel-header">
-                            <span>📢 Thông báo cần chú ý</span>
+                            <span>📢 Thông báo trường cần chú ý</span>
                             <span class="badge-tag teal">${d.relevantAnnouncements.length}</span>
                         </div>
                         <div class="side-panel-body">
@@ -247,21 +247,27 @@ const MyWeekModule = {
             return `<div style="font-size: 12px; color: var(--ueh-text-muted); text-align: center; padding: 16px 8px; font-style: italic;">Không có hạn chót hoặc deadline nào ${weekStr}</div>`;
         }
 
-        return deadlines.map(item => `
-            <div style="border-left: 3px solid ${item.isUrgent ? 'var(--ueh-red)' : 'var(--ueh-orange)'}; padding: 8px 10px; background: #fafafa; border-radius: var(--radius-sm); margin-bottom: 8px; transition: background 0.15s ease;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px;">
-                    <div style="font-weight: 600; font-size: 12.5px; color: var(--ueh-text-dark); flex: 1;">${item.title}</div>
-                    <span class="badge-tag ${item.tagColor || (item.isUrgent ? 'red' : 'orange')}">${item.type}</span>
+        return deadlines.map(item => {
+            const borderCol = item.isUrgent ? 'var(--ueh-red)' : (item.tagColor === 'purple' ? '#7c3aed' : (item.tagColor === 'orange' ? 'var(--ueh-orange)' : 'var(--ueh-teal)'));
+            const isEventAttend = item.type === 'Sự kiện UEH';
+            const timePrefix = isEventAttend ? '📅 Diễn ra:' : '⏰ Hạn:';
+
+            return `
+                <div style="border-left: 3px solid ${borderCol}; padding: 8px 10px; background: #fafafa; border-radius: var(--radius-sm); margin-bottom: 8px; transition: background 0.15s ease;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px;">
+                        <div style="font-weight: 600; font-size: 12.5px; color: var(--ueh-text-dark); flex: 1;">${item.title}</div>
+                        <span class="badge-tag ${item.tagColor || (item.isUrgent ? 'red' : 'orange')}">${item.type}</span>
+                    </div>
+                    ${item.subtitle ? `<div style="font-size: 11.5px; color: var(--ueh-text-muted); margin-top: 3px;">${item.subtitle}</div>` : ''}
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-top: 5px;">
+                        <span style="font-weight: 700; color: ${item.isUrgent ? 'var(--ueh-red)' : (item.tagColor === 'purple' ? '#7c3aed' : 'var(--ueh-orange)')};">
+                            ${timePrefix} ${item.formattedDeadline}
+                        </span>
+                        ${item.isUrgent ? '<span style="font-size: 10px; color: var(--ueh-red); font-weight: 700;">GẤP</span>' : (isEventAttend ? '<span style="font-size: 10px; color: #7c3aed; font-weight: 700;">ĐÃ ĐK</span>' : '')}
+                    </div>
                 </div>
-                ${item.subtitle ? `<div style="font-size: 11.5px; color: var(--ueh-text-muted); margin-top: 3px;">${item.subtitle}</div>` : ''}
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; margin-top: 5px;">
-                    <span style="font-weight: 700; color: ${item.isUrgent ? 'var(--ueh-red)' : 'var(--ueh-orange)'};">
-                        ⏰ ${item.formattedDeadline}
-                    </span>
-                    ${item.isUrgent ? '<span style="font-size: 10px; color: var(--ueh-red); font-weight: 700;">GẤP</span>' : ''}
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     },
 
     renderEvents(events) {
@@ -304,34 +310,59 @@ const MyWeekModule = {
         }
 
         return notices.map(notice => `
-            <div class="notice-card ${notice.priority === 'Urgent' ? 'urgent' : ''}">
+            <div class="notice-card ${notice.priority === 'Urgent' ? 'urgent' : ''}" style="cursor: pointer;" onclick="MyWeekModule.openNoticeDetail(${notice.announcementId})">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span class="badge-tag teal">📌 Dành cho sinh viên</span>
+                    <span class="badge-tag ${notice.priority === 'Urgent' ? 'red' : 'blue'}">${notice.category}</span>
+                </div>
                 <div class="notice-card-title">${notice.title}</div>
-                <div style="font-size: 12px; color: var(--ueh-text-muted); margin-bottom: 6px;">
+                <div style="font-size: 12px; color: var(--ueh-text-muted); margin-bottom: 6px; line-height: 1.4;">
                     ${notice.summary || ''}
                 </div>
-                <div class="notice-card-date">
-                    <span>${notice.issuer}</span>
-                    ${notice.deadlineAt ? `<span style="color: var(--ueh-red); font-weight: 600;">Hạn: ${new Date(notice.deadlineAt).toLocaleDateString('vi-VN')}</span>` : ''}
-                </div>
-                <div style="margin-top: 8px; display: flex; justify-content: flex-end; gap: 6px;">
-                    ${notice.isSaved ? `
-                        <span class="badge-tag green">✓ Đã đưa vào lịch</span>
-                        <button class="btn btn-outline btn-sm" onclick="MyWeekModule.removeSavedNotice(${notice.announcementId})">Bỏ lưu</button>
-                    ` : `
-                        <button class="btn btn-outline btn-sm" onclick="MyWeekModule.openSaveNoticeModal(${notice.announcementId}, '${notice.title.replace(/'/g, "\\'")}')">
-                            + Thêm vào lịch
-                        </button>
-                    `}
+                <div class="notice-card-date" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 500;">🏛️ ${notice.issuer}</span>
+                    ${notice.deadlineAt ? `<span style="color: var(--ueh-red); font-weight: 700;">⏰ Hạn: ${new Date(notice.deadlineAt).toLocaleDateString('vi-VN')}</span>` : ''}
                 </div>
             </div>
         `).join('');
+    },
+
+    async openNoticeDetail(id) {
+        try {
+            const ann = await ApiClient.getAnnouncement(id);
+            const pubDate = new Date(ann.publishedAt).toLocaleDateString('vi-VN');
+            const deadline = ann.deadlineAt ? new Date(ann.deadlineAt).toLocaleString('vi-VN') : 'Không có';
+
+            document.getElementById('modal-ann-title').textContent = ann.title;
+            document.getElementById('modal-ann-body').innerHTML = `
+                <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+                    <span class="badge-tag teal">📌 Thông báo dành cho sinh viên</span>
+                    <span class="badge-tag blue">${ann.category}</span>
+                    <span class="badge-tag ${ann.priority === 'Urgent' ? 'red' : 'gray'}">Mức độ: ${ann.priority}</span>
+                    ${ann.deadlineAt ? `<span class="badge-tag red">⏰ Hạn chót: ${deadline}</span>` : ''}
+                </div>
+
+                <div style="font-size: 12px; color: var(--ueh-text-muted); margin-bottom: 14px; border-bottom: 1px solid var(--ueh-border-light); padding-bottom: 8px;">
+                    <div><strong>Cơ quan ban hành:</strong> ${ann.issuer}</div>
+                    <div><strong>Ngày đăng:</strong> ${pubDate}</div>
+                </div>
+
+                <div style="font-size: 14px; line-height: 1.6; color: var(--ueh-text-dark); margin-bottom: 8px;">
+                    ${ann.content || ann.summary || 'Không có nội dung chi tiết.'}
+                </div>
+            `;
+
+            App.openModal('modal-ann-detail');
+        } catch (error) {
+            App.showToast(error.message, 'error');
+        }
     },
 
     // Interactions
     async registerEvent(eventId) {
         try {
             await ApiClient.registerEvent(eventId);
-            App.showToast('Đăng ký sự kiện thành công! Đã tự động cập nhật vào lịch tuần.', 'success');
+            App.showToast('Đăng ký sự kiện thành công! Đã tự động cập nhật vào lịch tuần và hạn chót.', 'success');
             await this.load(this.currentDate);
         } catch (error) {
             App.showToast(error.message, 'error');
@@ -391,45 +422,6 @@ const MyWeekModule = {
         try {
             await ApiClient.deleteTask(taskId);
             App.showToast('Đã xóa việc cá nhân.', 'info');
-            await this.load(this.currentDate);
-        } catch (error) {
-            App.showToast(error.message, 'error');
-        }
-    },
-
-    openSaveNoticeModal(announcementId, title) {
-        document.getElementById('save-notice-id').value = announcementId;
-        document.getElementById('save-notice-title').textContent = title;
-        document.getElementById('save-notice-date').value = this.currentDate;
-        document.getElementById('save-notice-note').value = '';
-        App.openModal('modal-save-notice');
-    },
-
-    async confirmSaveNotice() {
-        const announcementId = parseInt(document.getElementById('save-notice-id').value);
-        const plannedAt = document.getElementById('save-notice-date').value;
-        const personalNote = document.getElementById('save-notice-note').value.trim();
-
-        if (!plannedAt) {
-            App.showToast('Vui lòng chọn ngày muốn nhắc nhở trên lịch.', 'error');
-            return;
-        }
-
-        try {
-            await ApiClient.saveAnnouncement(announcementId, plannedAt, personalNote || null);
-            App.closeModal('modal-save-notice');
-            App.showToast('Đã thêm thông báo vào lịch cá nhân.', 'success');
-            await this.load(this.currentDate);
-        } catch (error) {
-            App.showToast(error.message, 'error');
-        }
-    },
-
-    async removeSavedNotice(announcementId) {
-        if (!confirm('Bạn có chắc muốn bỏ lưu thông báo này khỏi lịch cá nhân không?')) return;
-        try {
-            await ApiClient.removeSavedAnnouncement(announcementId);
-            App.showToast('Đã gỡ thông báo khỏi lịch cá nhân.', 'info');
             await this.load(this.currentDate);
         } catch (error) {
             App.showToast(error.message, 'error');

@@ -1,141 +1,282 @@
-# 🎓 CỔNG THÔNG TIN SINH VIÊN UEH & TÍNH NĂNG UEH MY WEEK
-> **Đồ án Prototype môn học / Báo cáo thực hành Full-Stack**  
-> **Khoa / Ngành:** Khoa Toán thống kê — Ngành Thống kê kinh doanh — Đại học Kinh tế TP. Hồ Chí Minh (UEH)  
-> **Công nghệ sử dụng:** ASP.NET Core 8.0 Web API • Entity Framework Core (Database-First) • Microsoft SQL Server 2025 • HTML5/CSS3/JavaScript thuần.
+﻿# 🎓 CỔNG THÔNG TIN SINH VIÊN UEH & TÍNH NĂNG UEH MY WEEK
+> **BÁO CÁO THUYẾT TRÌNH ĐỒ ÁN PROTOTYPE & TÀI LIỆU THẨM ĐỊNH HỆ THỐNG**  
+> **Đơn vị:** Khoa Toán - Thống kê • Trường Đại học Kinh tế TP. Hồ Chí Minh (UEH)  
+> **Chuyên ngành:** Thống kê kinh doanh  
+> **Học phần:** Tư duy thiết kế (Design Thinking)  
+> **Giảng viên hướng dẫn:** ThS. Nguyễn Quốc Khánh  
+> **Công nghệ phát triển:** ASP.NET Core 8.0 Web API • Entity Framework Core (Database-First) • Microsoft SQL Server 2025 • HTML5 / CSS3 / Modern JavaScript  
 
 ---
 
-## 👨‍🏫 DÀNH CHO GIẢNG VIÊN: HƯỚNG DẪN CHẤM ĐIỂM & TEST PROTOTYPE
+## 🌐 LINK TRẢI NGHIỆM TRỰC TIẾP (LIVE ONLINE PROTOTYPE)
 
-Kính gửi Quý Thầy/Cô, dưới đây là hướng dẫn để Thầy/Cô có thể chạy và kiểm thử toàn bộ các luồng nghiệp vụ của hệ thống.
+Hệ thống đã được triển khai thông qua đường hầm mã hóa bảo mật toàn cầu **Cloudflare Tunnel**, cho phép Thầy và Hội đồng kiểm thử trực tiếp trên máy tính, máy tính bảng hoặc điện thoại di động mà không cần cài đặt môi trường:
 
-### 1. Chuẩn bị môi trường (Nếu chạy Local)
-- Máy tính có cài **.NET 8.0 SDK** (hoặc mới hơn).
-- **Microsoft SQL Server** (bản Developer, Express hoặc LocalDB) đang chạy tại `localhost`.
-
-### 2. Khởi tạo Database (Chỉ chạy 1 lần duy nhất)
-Mở cửa sổ Terminal (PowerShell hoặc CMD) tại thư mục gốc của dự án và chạy các lệnh sau:
-
-```powershell
-# Bước 1: Tạo Database UEHStudentDB
-sqlcmd -S localhost -E -C -i "database\01_CreateDatabase.sql"
-
-# Bước 2: Tạo toàn bộ 14 bảng, ràng buộc khóa chính, khóa ngoại và indexes
-sqlcmd -S localhost -E -C -i "database\02_CreateSchema.sql"
-
-# Bước 3: Nạp dữ liệu mẫu chuẩn của Khoa Toán thống kê
-sqlcmd -S localhost -E -C -i "database\03_SeedDemoData.sql"
-```
-
-### 3. Khởi chạy Ứng dụng
-Chạy lệnh sau tại thư mục gốc:
-
-```powershell
-dotnet run --project src/UEHStudent.Api/UEHStudent.Api.csproj --launch-profile http
-```
-
-Mở trình duyệt web truy cập: **[http://localhost:5000/login.html](http://localhost:5000/login.html)** (hoặc [http://localhost:5000/](http://localhost:5000/)).  
-Trang tài liệu Swagger API: **[http://localhost:5000/swagger](http://localhost:5000/swagger)**.
+👉 **[https://benefits-resume-controlling-left.trycloudflare.com/login.html](https://benefits-resume-controlling-left.trycloudflare.com/login.html)**  
+*(Hoặc truy cập trang chủ: `https://benefits-resume-controlling-left.trycloudflare.com/`)*
 
 ---
 
-## 🔑 DANH SÁCH TÀI KHOẢN ĐĂNG NHẬP
+## 👥 THÀNH VIÊN NHÓM THỰC HIỆN & THÔNG TIN ĐĂNG NHẬP
 
-> **Quy ước đăng nhập sinh viên:**
-> - **Tên đăng nhập:** Mã số sinh viên (MSSV)
-> - **Mật khẩu:** 4 số cuối của MSSV
+Hệ thống được thiết kế cá nhân hóa 100% cho 7 sinh viên thuộc Khoa Toán - Thống kê, ngành Thống kê kinh doanh. 
 
-| STT | Họ và tên | Mã sinh viên | Tên đăng nhập | Mật khẩu | Khoa / Ngành |
-|---|---|---|---|---|---|
-| 1 | **Nguyễn Minh Khôi** | `31251022130` | `31251022130` | `2130` | Khoa Toán thống kê - Thống kê kinh doanh |
-| 2 | **Nguyễn Nhựt Thắng** | `31251023860` | `31251023860` | `3860` | Khoa Toán thống kê - Thống kê kinh doanh |
-| 3 | **Phạm Trần Tuấn Khang** | `31251025093` | `31251025093` | `5093` | Khoa Toán thống kê - Thống kê kinh doanh |
-| 4 | **Trà Anh Thư** | `31251026911` | `31251026911` | `6911` | Khoa Toán thống kê - Thống kê kinh doanh |
-| 5 | **Nguyễn Thị Thanh Tâm** | `31251023365` | `31251023365` | `3365` | Khoa Toán thống kê - Thống kê kinh doanh |
-| 6 | **Nguyễn Ngọc Anh Thư** | `31251023149` | `31251023149` | `3149` | Khoa Toán thống kê - Thống kê kinh doanh |
-| 7 | **Nguyễn Hữu Toàn** | `31251026534` | `31251026534` | `6534` | Khoa Toán thống kê - Thống kê kinh doanh |
-| 🛡️ | **Quản trị viên (Admin)** | — | `admin` | `Admin@123` | Quản trị viên hệ thống |
+> **Quy ước bảo mật tài khoản:**
+> - **Tên đăng nhập (Username):** Mã số sinh viên (MSSV)
+> - **Mật khẩu (Password):** 4 số cuối của MSSV
+
+| STT | Họ và tên sinh viên | Mã số sinh viên | Tên đăng nhập | Mật khẩu | Lớp / Ngành sinh hoạt |
+|:---:|---|:---:|:---:|:---:|---|
+| 1 | **Nguyễn Minh Khôi** | `31251022130` | `31251022130` | `2130` | Khoa Toán thống kê — Thống kê kinh doanh |
+| 2 | **Nguyễn Nhựt Thắng** | `31251023860` | `31251023860` | `3860` | Khoa Toán thống kê — Thống kê kinh doanh |
+| 3 | **Phạm Trần Tuấn Khang** | `31251025093` | `31251025093` | `5093` | Khoa Toán thống kê — Thống kê kinh doanh |
+| 4 | **Trà Anh Thư** | `31251026911` | `31251026911` | `6911` | Khoa Toán thống kê — Thống kê kinh doanh |
+| 5 | **Nguyễn Thị Thanh Tâm** | `31251023365` | `31251023365` | `3365` | Khoa Toán thống kê — Thống kê kinh doanh |
+| 6 | **Nguyễn Ngọc Anh Thư** | `31251023149` | `31251023149` | `3149` | Khoa Toán thống kê — Thống kê kinh doanh |
+| 7 | **Nguyễn Hữu Toàn** | `31251026534` | `31251026534` | `6534` | Khoa Toán thống kê — Thống kê kinh doanh |
+| 🛡️ | **Quản trị viên (Admin)** | Hệ thống UEH | `admin` | `Admin@123` | Quản trị đào tạo & Khảo thí |
+
+---
+
+## 💡 PHẦN I: Ý TƯỞNG THIẾT KẾ & BỐI CẢNH BÀI TOÁN (DESIGN THINKING)
+
+### 1. Bối cảnh thực tế & Nỗi đau của Người học (User Pain Points)
+Sinh viên UEH hàng ngày phải đối mặt với sự phân mảnh thông tin nghiêm trọng giữa nhiều nền tảng số:
+- **Cổng thông tin đào tạo (Portal):** Chứa thời khóa biểu ma trận và lịch thi nhưng hiển thị tĩnh, khó theo dõi biến động theo từng tuần.
+- **Hệ thống quản lý học tập (LMS):** Giảng viên giao bài tập, đề cương, quiz với các hạn chót dồn dập, sinh viên phải đăng nhập vào từng môn học riêng lẻ để kiểm tra.
+- **Kênh thông báo hành chính:** Thông báo học phí từ Phòng Kế hoạch - Tài chính, sinh hoạt công dân từ Phòng Chăm sóc người học, lịch khám sức khỏe từ Trạm Y tế nằm lẫn lộn với hàng trăm thông báo khác.
+- **Kênh sự kiện phong trào:** Hội thảo, workshop, ngày hội việc làm UEH Career Fair được truyền thông rời rạc qua fanpage hoặc email.
+
+👉 **Hậu quả:** Sinh viên dễ bị trễ hạn nộp bài tập nhóm, quên ngày nộp học phí dẫn đến bị khóa đăng ký môn học, hoặc bỏ lỡ các workshop kỹ năng bổ ích.
+
+### 2. Ý tưởng giải pháp: "UEH My Week — Trợ lý tuần thông minh"
+Áp dụng phương pháp luận **Tư duy thiết kế (Design Thinking)** lấy sinh viên làm trung tâm, nhóm đã đề xuất và xây dựng tính năng **UEH My Week**:
+- **Nguyên lý "Single Source of Truth":** Tích hợp Thời khóa biểu học tập, Lịch thi, Sự kiện ngoại khóa, Bài tập LMS và Hạn nộp học phí vào một dòng thời gian duy nhất theo tuần.
+- **Cá nhân hóa tự động (Smart Personalization):** Không bắt sinh viên phải tìm kiếm hay gõ tay những gì nhà trường và giảng viên đã ban hành. Dữ liệu tự động chảy về tài khoản của đúng sinh viên đó.
+- **Tương tác hai chiều tức thì (Real-time Interactivity):** Đăng ký sự kiện, thêm việc cá nhân, đánh dấu hoàn thành chỉ bằng một cú nhấp chuột mà không cần tải lại trang.
+
+---
+
+## 🧠 PHẦN II: LOGIC NGHIỆP VỤ & TRIẾT LÝ PHÂN TÁCH DỮ LIỆU
+
+Nhóm đã chuẩn hóa cấu trúc dữ liệu theo 3 phân hệ rành mạch, giải quyết triệt để vấn đề "nhiễu loạn thông tin":
+
+```
+                      ┌─────────────────────────────────────────┐
+                      │          CỔNG THÔNG TIN UEH             │
+                      │             (UEH My Week)               │
+                      └────────────────────┬────────────────────┘
+                                           │
+         ┌─────────────────────────────────┼─────────────────────────────────┐
+         ▼                                 ▼                                 ▼
+┌──────────────────┐             ┌──────────────────┐              ┌──────────────────┐
+│ 📢 THÔNG BÁO     │             │ ⏳ HẠN CHÓT &    │              │ 🎪 HOẠT ĐỘNG     │
+│    CẤP TRƯỜNG    │             │    DEADLINE TUẦN │              │    UEH TRONG TUẦN│
+└────────┬─────────┘             └────────┬─────────┘              └────────┬─────────┘
+         │                                │                                 │
+         ├─ Đóng học phí                  ├─ Bài tập LMS (GV giao)          ├─ Workshop
+         ├─ Sinh hoạt công dân            ├─ Lịch thi cuối kỳ               ├─ Career Fair
+         └─ Khám sức khỏe                 ├─ Hạn học phí (Phòng KHTC)       └─ Seminar chuyên đề
+                                          ├─ Hạn đăng ký sự kiện            
+                                          └─ Việc cá nhân tự thêm           
+```
+
+### 1. 📢 "Thông báo trường cần chú ý" (School-wide Notices)
+- **Bản chất:** Là các văn bản quy định, chế độ hành chính cấp toàn trường do các phòng ban chức năng ban hành.
+- **Quy tắc hiển thị:** Chỉ gồm 3 nhóm thông báo then chốt:
+  1. *Học phí học kỳ* — Phòng Kế hoạch - Tài chính.
+  2. *Sinh hoạt công dân sinh viên* — Phòng Chăm sóc và Hỗ trợ người học.
+  3. *Khám sức khỏe định kỳ* — Trạm Y tế UEH.
+- **Đặc trưng:** Gắn nhãn **`📌 Dành cho sinh viên`**. Sinh viên **không cần bấm "Thêm vào lịch"** thủ công; nhấp vào thẻ để mở hộp thoại đọc toàn văn quyết định của nhà trường.
+- **Nguyên tắc cốt lõi:** Tuyệt đối không để bài tập môn học tại đây nhằm giữ luồng thông tin hành chính luôn sạch sẽ.
+
+### 2. ⏳ "Hạn chót & Deadline tuần này" (Actionable Due Dates & LMS Sync)
+- **Bản chất:** Là **radar cảnh báo hành động** tập trung tất cả các việc sinh viên *phải nộp hoặc phải hoàn tất* trong tuần đang xem:
+  - 🟠 **Bài tập LMS (Đồng bộ tự động):** Mô phỏng kết nối API từ hệ thống học tập số LMS Canvas/Moodle do giảng viên giao:
+    - *Bài tập nhóm môn Tư duy thiết kế* — Giảng viên: **ThS. Nguyễn Quốc Khánh** (Hạn: 23:59 Chủ Nhật, 18/10/2026).
+    - *Thực hành R/Python chương 5 môn Tính toán thống kê* — Giảng viên: **TS. Lê Thanh Trung** (Hạn: 23:59 Chủ Nhật, 18/10/2026).
+  - 🔴 **Lịch thi kết thúc môn:** Khi chuyển sang tuần thi, tự động lấy lịch thi từ phòng Khảo thí và gắn cờ `GẤP`.
+  - 🔴 **Hạn nộp học phí cấp trường:** Cảnh báo mốc chót nộp học phí (23:59 Chủ Nhật, 18/10/2026).
+  - 🔵 **Việc cá nhân:** Các ghi chú, chuẩn bị bài do sinh viên chủ động tự thêm.
+- **Đồng bộ thời gian 100%:** Chỉ hiển thị những hạn chót nằm trong tuần đang chọn (Thứ Hai đến Chủ Nhật). Không sót việc, không hiển thị các thông báo rời rạc.
+
+### 3. 🎪 "Hoạt động UEH trong tuần" & Cơ chế đồng bộ hai chiều (Two-Way Sync)
+- Khi sinh viên **Chưa đăng ký**:
+  - Tại cột Sự kiện: Hiển thị nút **`Đăng ký`**.
+  - Tại cột Deadline: Xuất hiện dòng cảnh báo **`[Hạn đăng ký sự kiện]`** kèm thời hạn đóng cổng đăng ký (Ví dụ: trước 18:00 Thứ Sáu).
+- Khi sinh viên **Bấm đăng ký thành công**:
+  - Cột Sự kiện: Chuyển sang nhãn **`✓ Đã tham gia`** kèm nút `Hủy`.
+  - Cột Deadline: Lập tức chuyển thành **`[Sự kiện UEH] Tham dự: Workshop...`** (Màu tím, nhãn `ĐÃ ĐK`).
+  - Cột Dòng thời gian tuần (Timeline): Buổi workshop tự động xuất hiện vào đúng khung giờ Thứ Bảy (09:00 - 11:30) tại Hội trường A.
+- Khi bấm **Hủy đăng ký**: Toàn bộ hệ thống tự động hoàn tác trạng thái trên cả 3 khu vực mà không cần tải lại trang.
+
+---
+
+## 🎨 PHẦN III: CẤU TRÚC GIAO DIỆN & THIẾT KẾ TRỰC QUAN
+
+Giao diện được thiết kế hiện đại theo chuẩn nhận diện thương hiệu UEH với tone màu chủ đạo:
+- **Teal UEH (`#005863`):** Đại diện cho sự vững vàng, học thuật và tin cậy.
+- **Cam UEH (`#E85A0C`):** Tạo điểm nhấn năng động, cảnh báo deadline và các tính năng mới.
+- **Nền Light Gray (`#f4f6f8`) & White Card (`#ffffff`):** Mang lại không gian làm việc sạch sẽ, chống mỏi mắt.
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────────────┐
+│  UEH STUDENT PORTAL                                         👤 Nguyễn Minh Khôi | Đăng xuất│
+├──────────────┬───────────────────────────────────────────────────────────────────────────┤
+│ 📌 MY WEEK   │ 📅 UEH My Week — Lịch tuần tổng hợp                                        │
+│              │ [◀ Tuần trước]  [Tuần hiện tại (16/10)]  [Tuần sau ▶]   🗓️ 12/10/2026 – 18/10/2026│
+│ 🔍 TRA CỨU   ├───────────────────────────────────────────────────────────────────────────┤
+│ - Lịch học   │ 📚 4 Buổi học  │  📝 0 Kỳ thi  │  🎯 1 Sự kiện  │  ✅ 3 Việc cần làm │  🔔 3 Thông báo │
+│ - Lịch thi   ├─────────────────────────────────────────┬─────────────────────────────────┤
+│ - Thông báo  │ 📅 LỊCH TRÌNH CÁ NHÂN TUẦN NÀY          │ ⏳ HẠN CHÓT & DEADLINE TUẦN NÀY │
+│              │                                         │ - Tham dự: Workshop (T7 09:00)  │
+│              │ Thứ Hai, 12/10/2026                     │ - Chuẩn bị case study (T7 23:59)│
+│              │ ├ 07:30 - 11:30 | Tư duy thiết kế       │ - [LMS] Bài tập nhóm (CN 23:59) │
+│              │ └ 12:30 - 16:30 | Tính toán thống kê    │ - [LMS] Thực hành R (CN 23:59)  │
+│              │                                         │ - [Học phí] Hạn nộp (CN 23:59)  │
+│              │ Thứ Tư, 14/10/2026                      ├─────────────────────────────────┤
+│              │ └ 07:30 - 11:30 | Nguyên lý kế toán     │ 🎪 HOẠT ĐỘNG UEH TRONG TUẦN     │
+│              │                                         │ - Workshop Kỹ năng thuyết trình │
+│              │ Thứ Năm, 15/10/2026                     │   [✓ Đã tham gia] [Hủy]         │
+│              │ └ 07:30 - 09:30 | Nguyên lý kế toán     ├─────────────────────────────────┤
+│              │                                         │ 📢 THÔNG BÁO TRƯỜNG CẦN CHÚ Ý   │
+│              │ Thứ Sáu, 16/10/2026 (Hôm nay)           │ - Thông báo nộp học phí HK cuối │
+│              │ └ 07:30 - 11:30 | Quản trị học          │ - Sinh hoạt công dân sinh viên  │
+│              │                                         │ - Khám sức khỏe định kỳ năm 2026│
+│              │ Thứ Bảy, 17/10/2026                     │                                 │
+│              │ └ 09:00 - 11:30 | [SỰ KIỆN] Workshop... │                                 │
+└──────────────┴─────────────────────────────────────────┴─────────────────────────────────┘
+```
+
+### Chi tiết các phân vùng trên màn hình:
+1. **Thanh điều hướng tuần (Week Selector Bar):** 
+   - Điều hướng tiến/lùi 7 ngày.
+   - Nút tắt quay nhanh về "Tuần hiện tại (16/10)".
+   - Bộ chọn ngày bất kỳ (HTML5 Date Input) hỗ trợ nhảy đến bất kỳ mốc thời gian nào trong học kỳ.
+2. **Dải tóm tắt tuần (Summary Ribbon):**
+   - 5 thẻ đếm thông minh tự động tổng hợp số lượng: *Buổi học*, *Kỳ thi*, *Sự kiện đã tham gia*, *Việc cá nhân cần làm*, *Thông báo trường*.
+3. **Cột Dòng thời gian cá nhân (Weekly Timeline - 65% độ rộng):**
+   - Hiển thị tuần từ Thứ Hai đến Chủ Nhật.
+   - Thẻ ngày hiện tại (Thứ Sáu 16/10) nổi bật với viền cam và badge `Hôm nay`.
+   - Mỗi mục hiển thị rõ ràng: Khung giờ, Tên môn học, Mã lớp, Giảng viên, Phòng học, Nhãn phân loại màu sắc.
+   - Hỗ trợ nút `+ Thêm việc cá nhân` và nút xóa `✕` cho từng việc cá nhân.
+4. **Cột Radar cảnh báo bên phải (Side Column - 35% độ rộng):**
+   - **Box 1 (Hạn chót & Deadline):** Phân loại nhãn cam `Bài tập LMS`, nhãn đỏ `Hạn học phí`, nhãn tím `Sự kiện UEH`, nhãn xanh `Việc cá nhân`.
+   - **Box 2 (Hoạt động UEH):** Danh thiếp sự kiện sinh động với địa điểm, thời gian, nút bấm đăng ký/hủy tức thì.
+   - **Box 3 (Thông báo trường):** Danh mục thông báo chính thống gắn nhãn `📌 Dành cho sinh viên`, bấm vào xem chi tiết toàn văn bản.
+5. **Các tab tra cứu chuyên biệt:**
+   - **Lịch học (TKB):** Tái hiện ma trận 13 tiết x 7 thứ nguyên bản theo cổng UEH gốc.
+   - **Lịch thi:** Bảng tra cứu ngày thi, giờ thi, số báo danh, phòng thi và hình thức thi (Tự luận/Trắc nghiệm).
+   - **Thông báo chung:** Tìm kiếm theo từ khóa và lọc đa tiêu chí theo chuyên mục.
 
 ---
 
 ## 📚 DANH MỤC MÔN HỌC & GIẢNG VIÊN GIẢNG DẠY
 
-Tất cả môn học đã được đồng bộ chuẩn hóa tên giảng viên thực tế:
+Tất cả học phần đã được chuẩn hóa thông tin giảng viên và lịch học thực tế:
 
-| STT | Mã học phần | Tên học phần | Số TC | Lớp học phần | Giảng viên giảng dạy | Lịch học định kỳ |
-|---|---|---|---|---|---|---|
-| 1 | `TEC5500183B` | **Tư duy thiết kế** | 3 | `28C1TEC5500183B01` | **ThS. Nguyễn Quốc Khánh** | Thứ Hai (07:30 - 11:30), Phòng N2-508 |
-| 2 | `MAT58013B` | **Tính toán thống kê** | 3 | `28C1MAT5801360101` | **TS. Lê Thanh Trung** | Thứ Hai (12:30 - 16:30), Phòng B1-205 |
-| 3 | `PUF604103B` | **Nguyên lý kế toán** | 3 | `28C1PUF6041030101` | **ThS. Trần Thị Thương** | Thứ Tư (07:30 - 11:30) & Thứ Năm (07:30 - 09:30), N2-507 |
-| 4 | `BUS3012B` | **Quản trị học** | 3 | `28C1BUS30120001` | **PGS.TS. Hoàng Văn Bình** | Thứ Sáu (07:30 - 11:30), Phòng N3-201 |
+| STT | Mã học phần | Tên học phần | Số TC | Mã lớp học phần | Giảng viên giảng dạy | Lịch học định kỳ | Phòng học |
+|:---:|:---:|---|:---:|:---:|---|---|:---:|
+| 1 | `TEC5500183B` | **Tư duy thiết kế** | 3 | `28C1TEC5500183B01` | **ThS. Nguyễn Quốc Khánh** | Thứ Hai (07:30 - 11:30) | N2-508 |
+| 2 | `MAT58013B` | **Tính toán thống kê** | 3 | `28C1MAT5801360101` | **TS. Lê Thanh Trung** | Thứ Hai (12:30 - 16:30) | B1-205 |
+| 3 | `PUF604103B` | **Nguyên lý kế toán** | 3 | `28C1PUF6041030101` | **ThS. Trần Thị Thương** | Thứ Tư (07:30 - 11:30)<br>Thứ Năm (07:30 - 09:30) | N2-507 |
+| 4 | `BUS3012B` | **Quản trị học** | 3 | `28C1BUS30120001` | **PGS.TS. Hoàng Văn Bình** | Thứ Sáu (07:30 - 11:30) | N3-201 |
 
-*(Môn "Tính toán động kế" đã được loại bỏ hoàn toàn khỏi chương trình đào tạo và cơ sở dữ liệu)*.
-
----
-
-## 📋 KỊCH BẢN KIỂM THỬ GỢI Ý (5 BƯỚC TEST NHANH)
-
-### Bước 1: Đăng nhập Sinh viên
-1. Tại màn hình `login.html`, nhập MSSV `31251022130` và Mật khẩu `2130` (hoặc tài khoản của bất kỳ sinh viên nào trong nhóm) ➔ Bấm **Đăng nhập hệ thống**.
-2. Hệ thống chuyển vào giao diện chính mang màu sắc nhận diện Cổng thông tin UEH Student (Màu Teal đậm `#005863`, Cam UEH `#E85A0C`, nền xám trắng sạch sẽ).
-
-### Bước 2: Trải nghiệm tính năng trung tâm — UEH My Week
-1. **Dòng thời gian tuần (Weekly Timeline):** Hiển thị trực quan toàn bộ các buổi học trong tuần từ Thứ Hai đến Chủ Nhật, hiển thị chính xác môn **Tư duy thiết kế** của **ThS. Nguyễn Quốc Khánh**.
-2. **Chọn tuần bất kỳ:** 
-   - Nhấp vào ô **"Chọn ngày bất kỳ"** và chọn ngày `28/11/2026`.
-   - Hệ thống tự động chuyển sang tuần thi `23/11/2026 – 29/11/2026`, xuất hiện các kỳ thi cuối kỳ có nhãn đỏ nổi bật.
-   - Bấm nút **"Tuần hiện tại (16/10)"** để quay lại tuần học thông thường.
-
-### Bước 3: Tương tác tức thì (Không cần tải lại trang)
-1. **Đăng ký sự kiện UEH:** Tại cột bên phải (khu vực *Hoạt động UEH trong tuần*), tìm sự kiện *UEH Career Fair 2026* và bấm **Đăng ký**. 
-   - Sự kiện ngay lập tức được thêm vào dòng thời gian tuần cá nhân của sinh viên.
-   - Bấm **Hủy** để gỡ khỏi lịch cá nhân.
-2. **Thêm việc cá nhân (Personal Task):** Bấm nút **+ Thêm việc cá nhân**, nhập tiêu đề và ngày dự kiến ➔ Việc cá nhân xuất hiện ngay trên lịch tuần; có thể tích checkbox hoàn thành hoặc xóa.
-3. **Lưu thông báo vào lịch:** Tại khu vực *Thông báo cần chú ý*, chọn một thông báo quan trọng ➔ Bấm **+ Thêm vào lịch** và chọn ngày nhắc nhở.
-
-### Bước 4: Kiểm tra Thời khóa biểu ma trận & Lịch thi
-1. Chuyển sang tab **Thời khóa biểu**: Tái hiện chính xác bố cục lưới 13 tiết x 7 thứ của UEH.
-2. Chuyển sang tab **Lịch thi**: Hiển thị bảng chi tiết môn thi, phòng thi, hình thức thi kèm quy chế phòng thi.
-3. Chuyển sang tab **Thông báo chung**: Tìm kiếm thông báo theo từ khóa và bộ lọc chuyên mục.
-
-### Bước 5: Kiểm tra Cơ chế Đồng bộ Tự động từ Quản trị viên (Admin)
-1. Bấm **Đăng xuất** ➔ Đăng nhập bằng tài khoản **🛡️ Quản trị viên** (`admin` / `Admin@123`).
-2. Vào mục **Quản lý Lịch học**, thêm một buổi học mới cho lớp *28C1TEC5500183B01 — Tư duy thiết kế* vào **Thứ Bảy**, từ `08:00` đến `11:00`.
-3. Đăng xuất và đăng nhập lại tài khoản Sinh viên: Buổi học mới vừa tạo **lập tức xuất hiện trên cả trang Thời khóa biểu và UEH My Week**, chứng minh dữ liệu được đồng bộ 100% từ cơ sở dữ liệu thật.
+*(Môn "Tính toán động kế" không có trong chương trình đào tạo đã được loại bỏ hoàn toàn)*.
 
 ---
 
-## 🌐 GIẢI THÍCH VỀ ĐƯỜNG LINK ONLINE PROTOTYPE
+## 🏛️ PHẦN IV: KIẾN TRÚC KỸ THUẬT & CƠ SỞ DỮ LIỆU
 
-### 1. Đường link này từ đâu ra?
-Đường link công khai dạng `https://martha-wiki-golf-penguin.trycloudflare.com` được tạo ra thông qua **Cloudflare Tunnel (`cloudflared`)**.  
-- Tiện ích này thiết lập một đường ống bảo mật (Secure Tunnel) hai chiều mã hóa đầu cuối giữa máy tính của bạn và mạng lưới máy chủ toàn cầu của Cloudflare.
-- Nhờ đó, bất kỳ ai (kể cả Thầy/Cô dùng điện thoại hay máy tính ngoài trường) truy cập link trên đều được Cloudflare chuyển tiếp yêu cầu (forward) trực tiếp về port 5000 (`http://localhost:5000`) trên máy tính của bạn.
+### 1. Kiến trúc phân tầng (Clean Layered Architecture)
+- **Tầng Trình diễn (Presentation Layer):** Giao diện thuần Responsive không phụ thuộc framework nặng, tối ưu tốc độ tải dưới 0.3s.
+- **Tầng Ứng dụng (Web API Layer):** ASP.NET Core 8.0 Controller-based Web API, tuân thủ nghiêm ngặt chuẩn RESTful, trả về dữ liệu JSON có cấu trúc.
+- **Tầng Nghiệp vụ (Service Layer):** `MyWeekService` xử lý thuật toán hợp nhất thời gian, gom nhóm 7 ngày, tính toán hạn chót và trạng thái sự kiện.
+- **Tầng Dữ liệu (Data Access Layer):** Entity Framework Core 8 sử dụng mô hình **Database-First**, ánh xạ trực tiếp từ 14 bảng SQL Server thật.
+- **Bảo mật & Ủy quyền (Security):** Xác thực bằng **JSON Web Token (JWT Bearer)**, mã hóa mật khẩu an toàn, phân quyền theo Role (`Student` và `Admin`).
 
-### 2. Mọi cập nhật code và database có được update lên link đó không?
-**CÓ, 100% CẬP NHẬT THEO THỜI GIAN THỰC!**  
-Vì đường link này KHÔNG PHẢI là một bản copy tĩnh đưa lên mạng, mà nó trỏ trực tiếp vào đúng server backend ASP.NET Core và database SQL Server `UEHStudentDB` đang chạy trên máy tính của bạn:
-- Khi bạn sửa code giao diện (`login.html`, `app.js`, `styles.css`), người truy cập link bấm F5 là thấy giao diện mới ngay lập tức.
-- Khi bạn sửa dữ liệu trong SQL Server (thêm môn, đổi tên sinh viên), API sẽ đọc dữ liệu mới nhất từ SQL Server và trả về ngay trên link.
-- **Điều kiện duy nhất:** Giữ cho máy tính mở và tiến trình ứng dụng + đường hầm Cloudflare đang chạy.
+### 2. Cấu trúc Cơ sở dữ liệu chuẩn hóa (14 Bảng)
+1. `AcademicTerms`: Quản lý niên khóa và học kỳ.
+2. `Courses`: Danh mục môn học trong chương trình đào tạo.
+3. `ClassSections`: Danh sách các lớp học phần được mở trong kỳ.
+4. `Students`: Hồ sơ sinh viên (MSSV, Họ tên, Khoa, Ngành, Khóa học).
+5. `AppUsers`: Tài khoản đăng nhập hệ thống, liên kết 1-1 với sinh viên hoặc tài khoản quản trị.
+6. `StudentCourseEnrollments`: Danh sách sinh viên đăng ký lớp học phần.
+7. `ClassScheduleRules`: Quy tắc thời khóa biểu định kỳ theo thứ và khung giờ.
+8. `ExamSchedules`: Lịch thi kết thúc học phần, phòng thi, hình thức thi.
+9. `Announcements`: Thông báo chính thức của nhà trường.
+10. `AnnouncementTargets`: Quy tắc phân loại đối tượng nhận thông báo (Toàn trường / Khóa / Khoa).
+11. `Events`: Danh mục hội thảo, workshop, ngày hội việc làm UEH.
+12. `EventRegistrations`: Ghi nhận sinh viên đăng ký tham gia sự kiện.
+13. `PersonalTasks`: Quản lý việc cá nhân và các bài tập môn học.
+14. `StudentSavedAnnouncements`: Bảng dữ liệu hỗ trợ theo dõi thông báo.
+
+---
+
+## 🎙️ PHẦN V: KỊCH BẢN THUYẾT TRÌNH GỢI Ý (5 PHÚT BẢO VỆ ĐỒ ÁN)
+
+Dưới đây là kịch bản gợi ý giúp nhóm tự tin trình bày trước Giảng viên hướng dẫn:
+
+### Phút 1: Đặt vấn đề & Giới thiệu ý tưởng
+> *"Kính thưa Thầy, trong quá trình học tập tại UEH, nhóm chúng em nhận thấy sinh viên gặp rất nhiều khó khăn khi phải đăng nhập cùng lúc 3-4 nền tảng: Cổng thông tin để xem TKB, LMS để xem hạn bài tập, fanpage để tìm sự kiện và email để ngóng lịch học phí. Sự phân mảnh này thường xuyên khiến sinh viên bị sót deadline hoặc quên lịch trình.  
+> Vì vậy, vận dụng phương pháp Tư duy thiết kế (Design Thinking), nhóm em đã phát triển sản phẩm prototype: **Cổng thông tin sinh viên tích hợp tính năng UEH My Week** — một dòng thời gian hợp nhất giúp người học quản lý trọn vẹn tuần học tập của mình."*
+
+### Phút 2: Trình diễn đăng nhập & Giao diện trung tâm
+> *(Nhóm mở trang `login.html`, đăng nhập tài khoản của bạn Nguyễn Minh Khôi `31251022130` / `2130`)*  
+> *"Khi sinh viên đăng nhập, hệ thống tự động nhận diện danh tính sinh viên thuộc Khoa Toán - Thống kê. Ngay tại màn hình chính, tính năng **UEH My Week** hiển thị đầy đủ dải tóm tắt tuần và lịch học chi tiết của tuần hiện tại.  
+> Cụ thể vào Thứ Hai, bạn Khôi có lịch học môn **Tư duy thiết kế** của **ThS. Nguyễn Quốc Khánh** vào buổi sáng tại phòng N2-508 và môn **Tính toán thống kê** của **TS. Lê Thanh Trung** vào buổi chiều tại phòng B1-205."*
+
+### Phút 3: Chứng minh cơ chế đồng bộ LMS & Phân biệt dữ liệu
+> *"Điểm cốt lõi thứ nhất là khu vực **⏳ Hạn chót & Deadline tuần này** ở cột bên phải. Thay vì bắt sinh viên phải tự gõ lại bài tập môn học, hệ thống **tự động đồng bộ từ LMS**:
+> - Bài tập nhóm môn Tư duy thiết kế của Thầy Khánh, hạn 23:59 Chủ Nhật.
+> - Bài tập thực hành R/Python của Thầy Trung, hạn 23:59 Chủ Nhật.
+> Đồng thời, thông báo đóng học phí của Phòng Kế hoạch - Tài chính cũng được cảnh báo đỏ ngay tại đây.  
+> Bên dưới là mục **📢 Thông báo trường cần chú ý**, được lọc riêng các văn bản hành chính quan trọng cấp toàn trường (học phí, sinh hoạt công dân, khám sức khỏe) và gắn nhãn '📌 Dành cho sinh viên', hoàn toàn không bị lẫn lộn với bài tập môn học."*
+
+### Phút 4: Demo tương tác hai chiều Sự kiện UEH (Two-Way Sync)
+> *(Nhóm bấm nút **Đăng ký** sự kiện 'Workshop: Kỹ năng thuyết trình hiệu quả')*  
+> *"Điểm cốt lõi thứ hai là sự đồng bộ hai chiều thời gian thực giữa **Sự kiện UEH** và **Lịch trình tuần**.  
+> Khi bạn Khôi bấm **Đăng ký** sự kiện Workshop Kỹ năng thuyết trình:
+> 1. Tại mục Sự kiện: Nút chuyển ngay thành `✓ Đã tham gia`.
+> 2. Tại Dòng thời gian tuần: Buổi workshop lập tức xuất hiện vào Thứ Bảy lúc 09:00 tại Hội trường A.
+> 3. Tại cột Deadline: Mục này tự động chuyển thành lịch tham gia sự kiện `[Sự kiện UEH] Tham dự: Workshop...`.  
+> Nếu bạn Khôi bấm **Hủy**, cả 3 vị trí trên màn hình lập tức cập nhật lại mà không cần bấm F5 tải lại trang."*
+
+### Phút 5: Chuyển tuần khảo thí & Kết luận
+> *(Nhóm chọn ngày `28/11/2026` trên thanh chọn tuần)*  
+> *"Cuối cùng, tính năng UEH My Week cho phép xem bất kỳ tuần nào trong học kỳ. Khi em chọn ngày 28/11, hệ thống chuyển sang tuần thi kết thúc môn: Lịch học thường nhật tự động nhường chỗ cho các kỳ thi được gắn cờ đỏ nổi bật.  
+> Đồ án của nhóm em không chỉ là một giao diện tĩnh, mà chạy trên nền tảng **ASP.NET Core 8 Web API** kết nối trực tiếp với cơ sở dữ liệu thật **SQL Server 2025**. Nhóm em xin chân thành cảm ơn Thầy và rất mong nhận được những góp ý quý báu của Thầy ạ!"*
 
 ---
 
-## 🏛️ CẤU TRÚC CƠ SỞ DỮ LIỆU ĐỒ ÁN (14 BẢNG CHUẨN HÓA)
-1. `AcademicTerms`: Niên khóa và học kỳ.
-2. `Courses`: Danh mục môn học.
-3. `ClassSections`: Lớp học phần thực tế.
-4. `Students`: Hồ sơ sinh viên (Mã SV, Họ tên, Khoa Toán thống kê, Ngành Thống kê kinh doanh).
-5. `AppUsers`: Tài khoản bảo mật (User = MSSV, Mật khẩu = 4 số cuối).
-6. `StudentCourseEnrollments`: Danh sách môn sinh viên đang theo học.
-7. `ClassScheduleRules`: Quy tắc lịch học định kỳ trong học kỳ.
-8. `ExamSchedules`: Lịch thi cuối học phần.
-9. `Announcements`: Thông báo chung của trường.
-10. `AnnouncementTargets`: Đối tượng tiếp nhận thông báo.
-11. `Events`: Sự kiện, hội thảo UEH.
-12. `EventRegistrations`: Sinh viên đăng ký tham gia sự kiện.
-13. `PersonalTasks`: Quản lý việc cá nhân của sinh viên.
-14. `StudentSavedAnnouncements`: Thông báo sinh viên lưu vào lịch theo dõi.
+## ⚙️ PHẦN VI: HƯỚNG DẪN KHỞI CHẠY DỰ ÁN TRÊN MÁY LOCAL
+
+Nếu Thầy hoặc người dùng muốn chạy toàn bộ mã nguồn trên máy tính cá nhân:
+
+### 1. Yêu cầu môi trường
+- Hệ điều hành Windows 10/11
+- **.NET 8.0 SDK** (kiểm tra bằng lệnh `dotnet --version`)
+- **Microsoft SQL Server** (bản Developer/Express/LocalDB) đang chạy tại `localhost`
+
+### 2. Khởi tạo Cơ sở dữ liệu (3 script SQL tuần tự)
+Mở cửa sổ Terminal (PowerShell hoặc Command Prompt) tại thư mục dự án và chạy:
+```powershell
+# Bước 1: Tạo Database UEHStudentDB
+sqlcmd -S localhost -E -C -i "database\01_CreateDatabase.sql"
+
+# Bước 2: Tạo toàn bộ cấu trúc 14 bảng và khóa ngoại
+sqlcmd -S localhost -E -C -i "database\02_CreateSchema.sql"
+
+# Bước 3: Nạp dữ liệu chuẩn tiếng Việt UTF-8 BOM
+sqlcmd -S localhost -E -C -i "database\03_SeedDemoData.sql"
+```
+
+### 3. Khởi chạy Ứng dụng
+```powershell
+dotnet run --project src/UEHStudent.Api/UEHStudent.Api.csproj --launch-profile http
+```
+Truy cập trình duyệt: **[http://localhost:5000/login.html](http://localhost:5000/login.html)**  
+Tài liệu tra cứu Swagger API: **[http://localhost:5000/swagger](http://localhost:5000/swagger)**
 
 ---
-*Dự án hoàn thành đầy đủ 100% các tiêu chí kỹ thuật: Database-First, SQL Server thật, RESTful Web API, JWT Bearer Token, BCrypt Password Security và Giao diện UEH My Week Responsive.*
+*Đồ án hoàn thành với sự phối hợp chặt chẽ của tập thể 7 thành viên nhóm — Khoa Toán - Thống kê, Trường Đại học Kinh tế TP. Hồ Chí Minh (UEH).*
