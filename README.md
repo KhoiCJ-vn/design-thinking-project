@@ -12,8 +12,8 @@
 
 Hệ thống đã được triển khai thông qua đường hầm mã hóa bảo mật toàn cầu **Cloudflare Tunnel**, cho phép Thầy và Hội đồng kiểm thử trực tiếp trên máy tính, máy tính bảng hoặc điện thoại di động mà không cần cài đặt môi trường:
 
-👉 **[https://benefits-resume-controlling-left.trycloudflare.com/login.html](https://benefits-resume-controlling-left.trycloudflare.com/login.html)**  
-*(Hoặc truy cập trang chủ: `https://benefits-resume-controlling-left.trycloudflare.com/`)*
+👉 **[https://programming-comments-though-mumbai.trycloudflare.com/login.html](https://programming-comments-though-mumbai.trycloudflare.com/login.html)**  
+*(Hoặc truy cập trang chủ: `https://programming-comments-though-mumbai.trycloudflare.com/`)*
 
 ---
 
@@ -249,7 +249,27 @@ Dưới đây là kịch bản gợi ý giúp nhóm tự tin trình bày trướ
 
 ---
 
-## ⚙️ PHẦN VI: HƯỚNG DẪN KHỞI CHẠY DỰ ÁN TRÊN MÁY LOCAL
+## 📋 PHẦN VI: PHƯƠNG ÁN KIỂM TRA MẪU THỬ (5W TESTING FRAMEWORK) & 7 VÒNG LẶP CẢI TIẾN
+
+Nhóm đã xây dựng phương án kiểm thử hoàn chỉnh theo phương pháp luận **Tư duy thiết kế (Design Thinking)** dựa trên 5 câu hỏi cốt lõi:
+1. **WHAT (Test cái gì?):** Độ chính xác dữ liệu học tập (4 môn học, giảng viên ThS. Nguyễn Quốc Khánh, TS. Lê Thanh Trung); Cơ chế đồng bộ bài tập LMS và đồng bộ 2 chiều sự kiện UEH; Trải nghiệm UI/UX Responsive không tràn màn hình; Tính cá nhân hóa tự động theo MSSV.
+2. **WHEN (Test khi nào?):** Vòng lặp cải tiến liên tục (Formative Testing) sau mỗi lần tân sinh viên đóng góp ý kiến; Kiểm thử theo chu kỳ tuần học (16/10) và tuần thi (28/11); Kiểm thử nghiệm thu trước buổi thuyết trình.
+3. **WHO (Test cho ai?):** 7 sinh viên K52 ngành Thống kê kinh doanh (End-users); Giảng viên hướng dẫn ThS. Nguyễn Quốc Khánh (Chuyên gia đánh giá); Quản trị viên hệ thống (Admin).
+4. **HOW (Test như thế nào?):** Kiểm thử theo 5 kịch bản thực tế (Scenario-Based Testing); Giao thức nghĩ to thành tiếng (Think-Aloud Protocol); Đánh giá thang đo mức độ sử dụng hệ thống SUS (System Usability Scale đạt 88.5/100).
+5. **WHERE (Test ở đâu?):** Offline tại phòng máy và Thư viện thông minh UEH Cơ sở B & N; Online qua link Cloudflare Tunnel đa thiết bị (Smartphone, Tablet, Laptop).
+
+### 🔄 7 Vòng lặp cải tiến thực tế từ phản hồi của Tân sinh viên K52:
+- **Vòng lặp 1:** Sửa lỗi tràn ngang màn hình trên mobile và màn hình nhỏ ➔ Bổ sung CSS responsive, container co giãn.
+- **Vòng lặp 2:** Khắc phục rào cản cài đặt môi trường khi test ➔ Tích hợp đường hầm bảo mật Cloudflare Tunnel online.
+- **Vòng lặp 3:** Chuẩn hóa dữ liệu thật ➔ Loại bỏ môn ảo ("Tính toán động kế"), định danh 7 sinh viên nhóm, gán ThS. Nguyễn Quốc Khánh dạy môn Tư duy thiết kế, TS. Lê Thanh Trung dạy môn Tính toán thống kê.
+- **Vòng lặp 4:** Khắc phục lỗi font tiếng Việt trong SQL Server ➔ Chuyển đổi sang `NVARCHAR`, thêm tiền tố `N'...'` và mã hóa UTF-8 with BOM.
+- **Vòng lặp 5:** Sửa lỗi lệch thời gian trên Hạn chót & Deadline ➔ Lọc nghiêm ngặt 100% deadline nằm trong khoảng `[WeekStart, WeekEnd]` của tuần đang xem.
+- **Vòng lặp 6:** Phân định rõ ràng LMS vs. Thông báo trường ➔ Thông báo trường chỉ giữ Học phí, Sinh hoạt công dân, Khám sức khỏe; bài tập môn học tự động đồng bộ từ LMS sang cột Deadline.
+- **Vòng lặp 7:** Tối ưu hóa tính cá nhân hóa ➔ Bỏ nút thêm lịch thủ công, tự động gắn nhãn `📌 Dành cho sinh viên`; thiết lập đồng bộ hai chiều thời gian thực giữa Sự kiện UEH và Deadline/Timeline.
+
+---
+
+## ⚙️ PHẦN VII: HƯỚNG DẪN KHỞI CHẠY DỰ ÁN TRÊN MÁY LOCAL
 
 Nếu Thầy hoặc người dùng muốn chạy toàn bộ mã nguồn trên máy tính cá nhân:
 
